@@ -16,7 +16,7 @@ collections:
     my_collection2:
       ...
 ```
-#### Values:
+#### Keys:
 `source` : The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the _data directory in the root of your Jekyll site.
 
 `output` : This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages.
