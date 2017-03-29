@@ -1,4 +1,4 @@
-# YML-Splitter
+# YAML-Splitter
 ## A minimal Jekyll plugin for generating a collection of markdown files (with YAML front-matter) from single YAML array data file
 
 ### To use:
