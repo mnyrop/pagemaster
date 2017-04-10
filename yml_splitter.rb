@@ -8,7 +8,7 @@ Jekyll::Hooks.register :site, :after_reset do |site|
 			src = collection.metadata["source"]
 			my_yml = YAML::load(File.open('_data/' + src))
 			my_yml.each do |item|
-				basename = item["title"].to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+				basename = item["title"].to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '').gsub(/-+/, '-')
 				pagepath = targetdir + "/" + basename + ".md"
 				layout = collection.metadata["layout"]
 				if !File.exist?(pagepath)
