@@ -25,9 +25,12 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 				if !File.exist?(pagepath)
 					File.open(pagepath, 'w') { |file| file.write( item.to_yaml.to_s  + "layout: " + layout + "\n---" ) }
 					page_count+=1
+				else
+					puts ">>>> Yml_Splitter :: EEEK! " + basename + ".md already exits."
 				end
 			end
 			puts ">>>> Yml_Splitter :: Completed page generation of " + page_count.to_s + " pages from collection data."
 		end
 	end
 end
+
