@@ -1,12 +1,14 @@
 Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
-	for collection in site.collections # look thru collections in config.yml
+	for collection in site.collections 
 		collection = collection[1]
-		if collection.metadata["output"] && collection.metadata["yml_split"]
+		if collection.metadata["output"] && collection.metadata["yml_split"] 
+			# check usability of dir name, gsub alphanumerics to (especially) avoid leading double underscores, assign as targetdir
 			unless collection.metadata["dir"].nil? || collection.metadata["dir"] == ''
-				targetdir = "_" + collection.metadata["dir"].downcase.gsub(/[^\0-9a-z]/, '').to_s # accepts alphanumeric only, esp. avoiding double _
+				targetdir = "_" + collection.metadata["dir"].downcase.gsub(/[^\0-9a-z]/, '').to_s
 			else
 				raise "YAML-Splitter :: Target directory is undefined or unusable. Cannot generate pages. Specify dir in config and rebuild."
 			end
+			# set layout from config. if none specified, add default
 			unless collection.metadata["layout"].nil? || collection.metadata["layout"] == ''
 				layout = collection.metadata["layout"].to_s
 			else # if no layout is specified, use default
@@ -16,8 +18,12 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 			FileUtils::mkdir_p targetdir
 			puts ">>>> YAML-Splitter :: Made directory " + targetdir + " in root."
 			src = collection.metadata["source"].to_s
-			my_yml = YAML::load(File.open('_data/' + src))
-			puts ">>>> YAML-Splitter :: Loaded " + src + "."
+			begin
+				my_yml = YAML::load(File.open('_data/' + src))
+				puts ">>>> YAML-Splitter :: Loaded " + src + "."
+			rescue
+				raise "YAML-Splitter :: Cannot load " + src + ". Check for typos and rebuild."
+			end
 			page_count = 0
 			skip_count = 0
 			my_yml.each do |item|
@@ -36,5 +42,3 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 		end
 	end
 end
-
-
