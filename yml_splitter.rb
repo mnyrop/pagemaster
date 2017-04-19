@@ -5,7 +5,7 @@ Jekyll::Hooks.register :site, :after_reset do |site|
 		if collection.metadata["output"] && collection.metadata["yml_split"]
 			targetdir = "_" + collection.metadata["dir"].to_s
 			FileUtils::mkdir_p targetdir
-			src = collection.metadata["source"]
+			src = collection.metadata["source"].to_s
 			my_yml = YAML::load(File.open('_data/' + src))
 			my_yml.each do |item|
 				basename = item["title"].to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '').gsub(/-+/, '-')
