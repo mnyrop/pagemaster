@@ -3,7 +3,7 @@ Jekyll::Hooks.register :site, :after_reset do |site|
 		collname = collection[0]
 		collection = collection[1]
 		if collection.metadata["output"] && collection.metadata["yml_split"]
-			targetdir = "_" + collection.metadata["dir"]
+			targetdir = "_" + collection.metadata["dir"].to_s
 			FileUtils::mkdir_p targetdir
 			src = collection.metadata["source"]
 			my_yml = YAML::load(File.open('_data/' + src))
