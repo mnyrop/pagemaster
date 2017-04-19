@@ -1,10 +1,10 @@
 # YAML-Splitter
 ## A minimal Jekyll plugin for generating a collection of markdown files (with YAML front-matter) from single YAML array data file
 
-### To use:
-Add yml_splitter.rb to your `_plugins` directory.
+## To use:
+1. Add yml_splitter.rb to your `_plugins` directory.
 
-Set-up your collection(s) in `_config.yml`:
+2. Set-up your collection(s) in `_config.yml`:
 ```
 collections:
     my_collection1:
@@ -16,7 +16,11 @@ collections:
     my_collection2:
       ...
 ```
-#### Parameters:
+3. Make sure each collection item in your source file has a valid `title:` value. These will be used to name the page files.
+
+</br>
+
+### Config Parameters:
 `source` : The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the `_data` directory in the root of your Jekyll site.
 
 `output` : This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages. Once the pages are generated, flip this value and/or `yml_split` to `false` to avoid the plugin running unecessarily on `jekyll build` or `jekyll serve`.
@@ -29,5 +33,10 @@ collections:
 
 </br>
 
-*Note: You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!*
+*__Note:__ You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!*
 
+</br>
+
+## Bugs:
+
+The plugin currently does not account for collection items with the same name. If it encounters a second (or third...) item with the same name as one that has already generated a page, the plugin will move on. This can be mitigated by generating pages from unique IDs, though I will be working on another solution soon.
