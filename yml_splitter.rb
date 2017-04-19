@@ -3,42 +3,51 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 		collection = collection[1]
 		if collection.metadata["output"] && collection.metadata["yml_split"]
 			# check usability of dir name, gsub alphanumerics to (especially) avoid leading double underscores, assign as targetdir
-			unless collection.metadata["dir"].nil? || collection.metadata["dir"] == ''
-				targetdir = "_" + collection.metadata["dir"].downcase.gsub(/[^\0-9a-z]/, '').to_s
+			dir = collection.metadata["dir"]
+			unless dir.nil? || dir == ''
+				targetdir = "_" + dir.downcase.gsub(/[^\0-9a-z]/, '').to_s
+				FileUtils::mkdir_p targetdir
+				puts ">>>> YAML-Splitter :: Made directory " + targetdir + " in root."
 			else
 				raise "YAML-Splitter :: Target directory is undefined or unusable. Cannot generate pages. Specify dir in config and rebuild."
 			end
 			# set layout from config. if none specified, add default
 			unless collection.metadata["layout"].nil? || collection.metadata["layout"] == ''
 				layout = collection.metadata["layout"].to_s
-			else # if no layout is specified, use default
+			else
 				layout = "default"
 				puts ">>>> YAML-Splitter :: No layout specified in config. Using default layout."
 			end
-			FileUtils::mkdir_p targetdir
-			puts ">>>> YAML-Splitter :: Made directory " + targetdir + " in root."
-			src = collection.metadata["source"].to_s
+			# load YAML from config source
 			begin
-				my_yml = YAML::load(File.open('_data/' + src))
+				src = collection.metadata["source"].to_s
+				data = YAML::load(File.open('_data/' + src))
 				puts ">>>> YAML-Splitter :: Loaded " + src + "."
 			rescue
 				raise "YAML-Splitter :: Cannot load " + src + ". Check for typos and rebuild."
 			end
-			page_count = 0
-			skip_count = 0
-			my_yml.each do |item|
+			# keep track of (valid) pages generated vs. pages skipped
+			untitled = 0
+			nonunique = 0
+			valid = 0
+			# make the pages
+			data.each do |item|
 				basename = item["title"].to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '').gsub(/-+/, '-')
 				pagepath = targetdir + "/" + basename + ".md"
-				if !File.exist?(pagepath)
+				if basename.nil? || basename == ''
+					puts ">>>> YAML-Splitter :: Title for item is unspecified. Cannot generate page."
+					untitled+=1
+				elsif !File.exist?(pagepath)
 					File.open(pagepath, 'w') { |file| file.write( item.to_yaml.to_s  + "layout: " + layout + "\n---" ) }
-					page_count+=1
+					valid+=1
 				else
 					puts ">>>> YAML-Splitter :: EEEK! " + basename + ".md already exits."
-					skip_count+=1
+					nonunique+=1
 				end
 			end
-			puts ">>>> YAML-Splitter :: " + page_count.to_s + " pages were generated from " + src + " to new directory " + targetdir + "."
-			puts ">>>> YAML-Splitter :: " + skip_count.to_s + " items were skipped because of non-unique names."
+			puts ">>>> YAML-Splitter :: " + valid.to_s + " pages were generated from " + src + " to " + targetdir + " directory."
+			puts ">>>> YAML-Splitter :: " + nonunique.to_s + " items were skipped because of non-unique names."
+			puts ">>>> YAML-Splitter :: " + untitled.to_s + " items were skipped because of missing titles."
 		end
 	end
 end
