@@ -28,5 +28,5 @@ collections:
 `dir` : The name of the directory where the generated pages will go. This must be specified for the plugin to run.
 </br>
 </br>
-***Note*** You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!
+***Note:*** You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!
 
