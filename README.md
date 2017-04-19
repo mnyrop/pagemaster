@@ -1,5 +1,13 @@
 # YAML-Splitter
-## A minimal Jekyll plugin for generating a collection of markdown files (with YAML front-matter) from single YAML array data file
+## A minimal Jekyll plugin for generating a collection of markdown pages from a YAML array
+
+#### How?
+
+YAML-Splitter takes a specified YAML file from your `_data` folder and 'splits' each item into its own markdown page with the item data reproduced as front-matter. 
+
+#### Why?
+
+If you have a data set for a Jekyll collection (say, a CSV of page titles, image links, dates, tags, and so on), you can completely automate the generation of collection pages by (1) converting your file to YAML and (2) running this plugin on it. ___No manual entry required.___ And if each page in the collection uses the same custom layout, you can (3) specify that layout in your `config` and generate the html pages to your compiled `_site`, exactly as you want, without ever having to touch the markdown pages. 
 
 ## To use:
 1. Add yml_splitter.rb to your `_plugins` directory.
