@@ -26,7 +26,8 @@ collections:
 `layout` : YML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example, if you specify `layout: page_gen_layout` in your `_config.yml`, you'll need to make a `page_gen_layout.html` template and put it in the `_layouts` directory at the root of your site. If no layout is specified, YML-Splitter adds `layout: default` to the front matter of each page and notifies you in the console.
 
 `dir` : The name of the directory where the generated pages will go. This must be specified for the plugin to run.
+
 </br>
-</br>
-***Note:*** You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!
+
+*Note: You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!*
 
