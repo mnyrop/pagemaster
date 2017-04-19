@@ -54,4 +54,4 @@ collections:
 
 ## Bugs:
 
-The plugin currently does not account for collection items with the same name. If it encounters a second (or third....) item with the same name as one that has already generated a page, the plugin will move on. I might work on a solution, but in the meantime, YAML-Splitter logs the skipped/ungenerated pages to the console, and gives you a final count of pages generated, for comparison.
+The plugin currently does not account for collection items with the same name. If it encounters a second (or third....) item with the same name as one that has already generated a page, the plugin will move on. I might work on a solution, but in the meantime, YAML-Splitter logs the skipped/un-generated pages to the console, and gives you a final count of pages generated (see above). It should help you identify how to clean up your data (i.e. in OpenRefine) before moving it back into your `data` folder and trying again.
