@@ -37,7 +37,7 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 				end
 			end
 
-			def uniqify(s, n) # takes opened src file, and name_key to slugify + uniquify
+			def uniqify(s, n) # takes opened src file and name_key to slugify + uniquify
 				names = [] # array of slug names, to check for uniqueness
 				occurences = {} # hash list of slug names and # of occurences
 				s.each do |item|
