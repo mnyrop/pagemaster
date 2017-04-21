@@ -53,10 +53,6 @@ collections:
 
 Unkown number of unknown bugs.
 
-## Author(s)
-
-[Marii](https://mnyrop.github.io)
-
 
 ## License:
 
