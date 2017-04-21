@@ -1,5 +1,5 @@
 # YAML-Splitter
-## A minimal Jekyll plugin for generating a collection of markdown pages from a YAML array
+## A Jekyll plugin for generating a collection of markdown pages from a YAML array
 
 #### How?
 
