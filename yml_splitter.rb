@@ -38,19 +38,18 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 			end
 
 			def uniqify(s, n) # takes opened src file, and name_key to slugify + uniquify
-				names = [] # array of slug names, to check for uniqueness
 				occurences = {} # hash list of slug names and # of occurences
 				s.each do |item|
 					new_name = item[@name_key].downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '').gsub(/-+/, '-') # gsub for slug
-					if names.include? new_name
+					if occurences.has_key? new_name
 						occurences[new_name]+=1
 						safe_slug = new_name + "-" + occurences[new_name].to_s
 					else
-						names.push(new_name)
 						occurences.store(new_name, 1)
 						safe_slug = new_name
 					end
 					item.store("slug", safe_slug)
+					puts safe_slug
 				end
 				return s # return changed yml array with unique, slugified names added
 			end
@@ -74,6 +73,7 @@ Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
 					untitled+=1
 				elsif !File.exist?(pagepath)
 					File.open(pagepath, 'w') { |file| file.write( item.to_yaml.to_s + layout_str + "\n---" ) }
+					# puts ">> YAML-Splitter :: Created " + pagename + ".md."
 					valid+=1
 				else
 					puts ">> YAML-Splitter :: " + pagename + ".md already exits."
