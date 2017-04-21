@@ -1,10 +1,18 @@
 # YAML-Splitter
-## A minimal Jekyll plugin for generating a collection of markdown files (with YAML front-matter) from single YAML array data file
+## A minimal Jekyll plugin for generating a collection of markdown pages from a YAML array
 
-### To use:
-Add yml_splitter.rb to your `_plugins` directory.
+#### How?
 
-Set-up your collection(s) in `_config.yml`:
+YAML-Splitter takes a specified YAML file from your `_data` folder and 'splits' each item into its own markdown page with the item data reproduced as front-matter.
+
+#### Why?
+
+If you have a data set for a Jekyll collection (say, a CSV of page titles, image links, dates, tags, and so on), you can completely automate the generation of collection pages by (1) converting your file to YAML and (2) running this plugin on it. ___No manual entry required.___ And if each page in the collection uses the same custom layout, you can (3) specify that layout in your `config` and generate the html pages to your compiled `_site`, exactly as you want, without ever having to touch the markdown pages.
+
+## To use:
+1. Add yml_splitter.rb to your `_plugins` directory.
+
+2. Set-up your collection(s) in `_config.yml`:
 ```
 collections:
     my_collection1:
@@ -16,17 +24,34 @@ collections:
     my_collection2:
       ...
 ```
-#### Keys:
-`source` : The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the _data directory in the root of your Jekyll site.
+3. Make sure each collection item in your source file has a valid `title:` value. These will be used to name the page files.
 
-`output` : This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages.
+</br>
 
-`yml_split` : Must be set to `true` for the yml_splitter to run on a given collection. If you have another collection within your site that you do not want to generate pages for, set this parameter to `false` for that collection.
+### Config Parameters:
 
-`layout` : YML-Splitter will replace the `layout: default` front-matter for the generated pages based on this value. For example, if you specify `layout: page_gen_layout` in your `_config.yml`, you'll need to make a `page_gen_layout.html` template and put it in the `_layouts` directory at the root of your site.
-
-`dir` : The name of the directory where the generated pages will go.
+|             	|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     	|
+|-------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| `source`    	| The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the `_data` directory in the root of your Jekyll site, and you __must__ include the file extension (.yml or .yaml).                                                                                                                                                                                                                                                                                              	|
+| `output`    	| This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages. Once the pages are generated, flip this value and/or `yml_split` to `false` to avoid the plugin running unecessarily on `jekyll build` or `jekyll serve`.                                                                                                                                                                                                                                                        	|
+| `yml_split` 	| Must be set to `true` for YAML-Splitter to run on a given collection. If you have another collection within your site for which you do not want to generate pages, set this parameter to `false` for that collection. As with `output` above, you can also switch this value to `false` after the pages are properly generated.                                                                                                                                                                                        	|
+| `layout`    	| YAML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example, if you specify `layout: page_gen_layout` in your `_config.yml`, you'll need to make a `page_gen_layout.html` template and put it in the `_layouts` directory at the root of your site. If no layout is specified, YML-Splitter adds `layout: default` to the front matter of each page and notifies you in the console. 	|
+| `dir`       	| The name of the directory where the generated pages will go. This must be specified for the plugin to run.                                                                                                                                                                                                                                                                                                                                                                                                          	|
 
 
 </br>
-*Note: This is the littlest, barest-of-bones plugin. It doesn't check for anything, or warn you if you're missing values. Be warned!
+
+*__Note:__ You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!*
+
+
+</br>
+
+### Sample log on `jekyll build`:
+
+![](sample-log.png)
+
+</br>
+
+## Bugs:
+
+The plugin currently does not account for collection items with the same name. If it encounters a second (or third....) item with the same name as one that has already generated a page, the plugin will move on. I might work on a solution, but in the meantime, YAML-Splitter logs the skipped/un-generated pages to the console, and gives you a final count of pages generated (see above). It should help you identify ways to clean up your data (i.e. in OpenRefine) before moving it back into your `_data` folder and trying again.
