@@ -19,8 +19,9 @@ collections:
       source: my_data.yml
       output: true
       yml_split: true
-      layout: page_gen_layout
+      name_key: title
       dir: my-directory
+      layout: my_layout
     my_collection2:
       ...
 ```
@@ -32,26 +33,20 @@ collections:
 
 |             	|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     	|
 |-------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| `source`    	| The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the `_data` directory in the root of your Jekyll site, and you __must__ include the file extension (.yml or .yaml).                                                                                                                                                                                                                                                                                              	|
-| `output`    	| This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages. Once the pages are generated, flip this value and/or `yml_split` to `false` to avoid the plugin running unecessarily on `jekyll build` or `jekyll serve`.                                                                                                                                                                                                                                                        	|
-| `yml_split` 	| Must be set to `true` for YAML-Splitter to run on a given collection. If you have another collection within your site for which you do not want to generate pages, set this parameter to `false` for that collection. As with `output` above, you can also switch this value to `false` after the pages are properly generated.                                                                                                                                                                                        	|
-| `layout`    	| YAML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example, if you specify `layout: page_gen_layout` in your `_config.yml`, you'll need to make a `page_gen_layout.html` template and put it in the `_layouts` directory at the root of your site. If no layout is specified, YML-Splitter adds `layout: default` to the front matter of each page and notifies you in the console. 	|
-| `dir`       	| The name of the directory where the generated pages will go. This must be specified for the plugin to run.                                                                                                                                                                                                                                                                                                                                                                                                          	|
+| `source`    	| REQUIRED: The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the `_data` directory in the root of your Jekyll site, and you __must__ include the file extension (.yml or .yaml). |
+| `output`    	| REQUIRED: This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages. Once the pages are generated, flip this value and/or `yml_split` to `false` to avoid the plugin running unecessarily on `jekyll build` or `jekyll serve`. |
+| `yml_split` 	| REQUIRED: Must be set to `true` for YAML-Splitter to run on a given collection. If you have another collection within your site for which you do not want to generate pages, set this parameter to `false` for that collection. As with `output` above, you can also switch this value to `false` after the pages are properly generated. |                                                                     
+| `name_key`    	| REQUIRED: The key in your YAML file that will be used to generate the file names of your pages. E.g. "title", "name", "id", etc. 	|
+| `dir`       	| REQUIRED: The name of the directory where the generated pages will go. This must be specified for the plugin to run.     |         
+| `layout`    	| OPTIONAL: YAML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example, if you specify `layout: page_gen_layout` in your `_config.yml`, you'll need to make a `page_gen_layout.html` template and put it in the `_layouts` directory at the root of your site. This value is optional, in case you'd like to granularly specify `layout` values within your YAML file. 	|
 
 
 </br>
 
 *__Note:__ You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!*
 
-
-</br>
-
-### Sample log on `jekyll build`:
-
-![](sample-log.png)
-
 </br>
 
 ## Bugs:
 
-The plugin currently does not account for collection items with the same name. If it encounters a second (or third....) item with the same name as one that has already generated a page, the plugin will move on. I might work on a solution, but in the meantime, YAML-Splitter logs the skipped/un-generated pages to the console, and gives you a final count of pages generated (see above). It should help you identify ways to clean up your data (i.e. in OpenRefine) before moving it back into your `_data` folder and trying again.
+Unkown number of unknown bugs.
