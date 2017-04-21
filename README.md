@@ -53,7 +53,7 @@ collections:
 
 Unkown number of unknown bugs.
 
-## Author(s
+## Author(s)
 
 [Marii](https://mnyrop.github.io)
 
