@@ -52,3 +52,12 @@ collections:
 ## Bugs:
 
 Unkown number of unknown bugs.
+
+## Author(s
+
+[Marii](https://mnyrop.github.io)
+
+
+## License:
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/mnyrop/YAML-Splitter/blob/master/LICENSE.md) file for details
