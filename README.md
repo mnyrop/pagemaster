@@ -25,7 +25,9 @@ collections:
     my_collection2:
       ...
 ```
-3. Make sure each collection item in your source file has a valid `title:` value. These will be used to name the page files.
+3. Run `jekyll build`
+
+4. Turn `yml_split` to `false` in order to skip running the plugin on future instances of `jekyll build` and `jekyll serve`.
 
 </br>
 
@@ -43,7 +45,7 @@ collections:
 
 </br>
 
-*__Note:__ You can add as many parameters to your collection config as you like, to use in other parts of your site. Just make sure they do not overlap with the ones above!*
+*__Note:__ You can add as many parameters to your collection config as you like (for use in other functions for your site), but make sure they do not overwrite any of the ones above!*
 
 </br>
 
