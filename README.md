@@ -54,6 +54,3 @@ collections:
 Unkown number of unknown bugs.
 
 
-## License:
-
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/mnyrop/YAML-Splitter/blob/master/LICENSE.md) file for details
