@@ -18,8 +18,7 @@ Kind of. But **pagemaster** gives you a lot more control and generates specifica
 Yes. Because the pages are generated to root as markdown, you only need to run the plugin locally once. From there GH pages will do what it normally does with Jekyll sites—compile vanilla yaml and markdown to html.
 
 ## To use
-1. Clone this repo into the `_plugins` directory of your Jekyll site.
-
+1. `gem install pagemaster` or add `gem 'pagemaster, '1.0.0'` to your Gemfile.
 2. Set-up your collection(s) in `_config.yml`. For example:
 ```yaml
 collections:
