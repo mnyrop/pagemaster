@@ -14,6 +14,4 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
 
   s.add_dependency 'jekyll', '~> 3.0'
-  s.add_dependency 'yaml'
-  s.add_dependency 'csv'
 end
