@@ -50,8 +50,8 @@ collections:
 
 ### Config parameters, explained
 
-| name 	| type | description | importance 	|
-|-------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|------------	|
+| name | type | description | importance 	|
+|:------|:------|:-------------|:-------------|
 | `output` 	| boolean | This is a built-in Jekyll collections value, and must be set to `true` in order for the generated `.md` pages to be compiled to html on `jekyll build`. 	| required 	|  
 | `pm_generate` 	| boolean | Must be set to `true` for **pagemaster** to run on a given collection. Switch this value to `false` after the pages are properly generated to avoid running the plugin again. 	| required 	|
 | `pm_input`   | string | The src input type of the data file. Must be `yaml` or `csv`. Also serves as the extension of the file.  | required   |
