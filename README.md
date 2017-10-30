@@ -1,56 +1,75 @@
-# YAML-Splitter
-## A Jekyll plugin for generating a collection of markdown pages from a YAML array
+# pagemaster
+## A Jekyll plugin for generating a collection of markdown pages from a CSV file or YAML array
 
 #### How?
 
-YAML-Splitter takes a specified YAML file from your `_data` folder and 'splits' each item into its own markdown page with the item data reproduced as front-matter.
+**pagemaster** takes a specified `.yaml` or `.csv` file from your `_data` folder and 'splits' each item into the front matter of an individually generated page.
 
 #### Why?
 
-If you have a data set for a Jekyll collection (say, a CSV of page titles, image links, dates, tags, and so on), you can completely automate the generation of collection pages by (1) converting your file to YAML and (2) running this plugin on it. ___No manual entry required.___ And if each page in the collection uses the same custom layout, you can (3) specify that layout in your `config` and generate the html pages to your compiled `_site`, exactly as you want, without ever having to touch the markdown pages.
+If you have a data set for a Jekyll collection (e.g. a CSV of page titles, image links, dates, tags, and so on), you can completely automate the generation of collection pages by running this plugin with it. And if each page in the collection uses the same custom layout, you can specify that layout in your `config` and generate the html pages to your compiled `_site`, exactly as you want, without ever having to touch the markdown pages.
 
-## To use:
-1. Add yml_splitter.rb to your `_plugins` directory.
+#### Isn't this what Jekyll collections are for?
 
-2. Set-up your collection(s) in `_config.yml`:
-```
+Kind of. But **pagemaster** gives you a lot more control and generates specifically to the `root` of your site.
+
+#### Will it work with GitHub Pages?
+
+Yes. Because the pages are generated to root as markdown, you only need to run the plugin locally once. From there GH pages will do what it normally does with Jekyll sites—compile vanilla yaml and markdown to html.
+
+## To use
+1. Clone this repo into the `_plugins` directory of your Jekyll site.
+
+2. Set-up your collection(s) in `_config.yml`. For example:
+```yaml
 collections:
-    my_collection1:
-      source: my_data.yml
-      output: true
-      yml_split: true
-      name_key: title
-      directory: my-directory
-      layout: my_layout
-    my_collection2:
+      writers:
+        output: true
+        pm_generate: true
+        pm_input: csv
+        pm_source: writer-list
+        pm_key: id
+        pm_directory: writer
+        pm_layout: writer-profile-page
+      scientists:
+        output: true
+        pm_generate: true
+        pm_input: yaml
+        pm_source: scientist-survey
+        pm_key: orcid
+        pm_directory: scientist
+        pm_layout: scientist-profile-page
+
       ...
 ```
 3. Run `jekyll build`
 
-4. Turn `yml_split` to `false` in order to skip running the plugin on future instances of `jekyll build` and `jekyll serve`.
+4. Turn `pm_generate` to `false` in order to skip re-running the plugin (and regenerating the pages) on future instances of `jekyll build` and `jekyll serve`.
 
 </br>
 
-### Config parameters, explained:
+### Config parameters, explained
 
-| name 	| description 	| importance 	|
+| name 	| type | description | importance 	|
 |-------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|------------	|
-| `source` 	| The name of the YAML data file you want to use to generate the .md pages. This file __must__ be in the `_data` directory in the root of your Jekyll site, and you __must__ include the file extension (.yml or .yaml). 	| required 	|
-| `output` 	| This is a built-in Jekyll collections value, and must be set to `true` in order to generate pages. Once the pages are generated, flip this value and/or `yml_split` to `false` to avoid the plugin running unecessarily on `jekyll build` or `jekyll serve`. 	| required 	|
-| `yml_split` 	| Must be set to `true` for YAML-Splitter to run on a given collection. If you have another collection within your site for which you do not want to generate pages, set this parameter to `false` for that collection. As with `output` above, you can also switch this value to `false` after the pages are properly generated. 	| required 	|
-| `name_key` 	| The variable in your YAML file that will be used to generate the file names of your pages. E.g. "title", "name", "id", etc. 	| required 	|
-| `directory` 	| The name of the directory where the generated pages will go. This must be specified for the plugin to run. 	| required 	|
-| `layout` 	| YAML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example, if you specify `layout: page_gen_layout` in your `_config.yml`, you'll need to make a `page_gen_layout.html` template and put it in the `_layouts` directory at the root of your site. This value is optional, in case you'd like to granularly specify `layout` values within your YAML file. 	| optional 	|
+| `output` 	| boolean | This is a built-in Jekyll collections value, and must be set to `true` in order for the generated `.md` pages to be compiled to html on `jekyll build`. 	| required 	|  
+| `pm_generate` 	| boolean | Must be set to `true` for **pagemaster** to run on a given collection. Switch this value to `false` after the pages are properly generated to avoid running the plugin again. 	| required 	|
+| `pm_input`   | string | The src input type of the data file. Must be `yaml` or `csv`. Also serves as the extension of the file.  | required   |
+| `pm_source` 	| string | The name of the data file you want to use to generate the .md pages. This file __must__ be present in the `_data` directory in the root of your Jekyll site, and you __must not__ include the file extension. 	| required 	|
+| `pm_key` 	| string | The unique variable / primary key in your data file that will be used to generate the file names of your pages. E.g. `title`, `name`, `id`, etc. 	| required 	|
+| `pm_directory` 	| string | The name of the directory where the generated pages will go. If not specified, the `source` file name will be used. 	| optional 	|
+| `pm_layout` 	| string | YAML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example,  `pm_layout: page_gen_layout` in will use the `page_gen_layout.html` template in the `_layouts` directory at the root of your site. | optional 	|
 
 
-</br>
+### Results
+
+For the `writers` example above, **pagemaster** will:
+1.  look for `writer-list.csv` in the `_data` directory,
+2. make a new directory called `_writers`, and
+3. generate a markdown page for each item in `writer-list.csv`, named after its `id` value and using the `writer-profile-page.html` layout.
+
+<br>
 
 *__Note:__ You can add as many parameters to your collection config as you like (for use in other functions for your site), but make sure they do not overwrite any of the ones above!*
 
-</br>
-
-## Bugs:
-
-Unkown number of unknown bugs.
-
-
+<br>
