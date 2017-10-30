@@ -1,5 +1,5 @@
 # pagemaster 🔀📄💥
-## A Jekyll plugin for generating a collection of markdown pages from a CSV file or YAML array
+## A Jekyll plugin for generating a collection of markdown pages from a CSV file or YAML file
 
 #### How?
 
