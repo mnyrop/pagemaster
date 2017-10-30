@@ -1,25 +1,25 @@
-# pagemaster  [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster)
+# pagemaster [:gem:](https://rubygems.org/gems/pagemaster)  [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster)
 ## A Jekyll plugin for generating a collection of markdown pages to /root from a CSV or YAML file
 
-#### How?
+### How?
 
 **pagemaster** takes a specified `.yaml` or `.csv` file from your `_data` folder and 'splits' each item into the front matter of an individually generated page.
 
-#### Why?
+### Why?
 
 If you have a data set for a Jekyll collection (e.g. a CSV of page titles, image links, dates, tags, and so on), you can completely automate the generation of collection pages by running this plugin with it. And if each page in the collection uses the same custom layout, you can specify that layout in your `config` and generate the html pages to your compiled `_site`, exactly as you want, without ever having to touch the markdown pages.
 
-#### Isn't this what Jekyll collections are for?
+### Isn't this what Jekyll collections are for?
 
 Kind of. But **pagemaster** gives you a lot more control and generates specifically to the `root` of your site.
 
-#### Will it work with GitHub Pages?
+### Will it work with GitHub Pages?
 
 Yes. Because the pages are generated to root as markdown, you only need to run the plugin locally once. From there GH pages will do what it normally does with Jekyll sites—compile vanilla yaml and markdown to html.
 
 ## To use
 1. `$ gem install pagemaster` or add `gem 'pagemaster', '1.0.0'` to your Gemfile.
-2. Set-up your collection(s) in `_config.yml`. For example:
+2. Set-up your collection(s) in `_config.yml` with **agemaster** variables. For example:
 ```yaml
 collections:
       writers:
@@ -41,23 +41,23 @@ collections:
 
       ...
 ```
-3. Run `jekyll build`
+3. Run (bundle exec) `jekyll build` or `jekyll serve`
 
-4. Turn `pm_generate` to `false` in order to skip re-running the plugin (and regenerating the pages) on future instances of `jekyll build` and `jekyll serve`.
+4. Switch `pm_generate` to `false`. This will avoid re-running the plugin (and regenerating the pages) on future instances of `jekyll build` and `jekyll serve`.
 
-</br>
+<br>
 
 ### Config parameters, explained
 
 | name | type | description | importance 	|
 |:------|:------|:-------------|:-------------|
-| `output` 	| boolean | This is a built-in Jekyll collections value, and must be set to `true` in order for the generated `.md` pages to be compiled to html on `jekyll build`. 	| required 	|  
-| `pm_generate` 	| boolean | Must be set to `true` for **pagemaster** to run on a given collection. Switch this value to `false` after the pages are properly generated to avoid running the plugin again. 	| required 	|
-| `pm_input`   | string | The src input type of the data file. Must be `yaml` or `csv`. Also serves as the extension of the file.  | required   |
-| `pm_source` 	| string | The name of the data file you want to use to generate the .md pages. This file __must__ be present in the `_data` directory in the root of your Jekyll site, and you __must not__ include the file extension. 	| required 	|
-| `pm_key` 	| string | The unique variable / primary key in your data file that will be used to generate the file names of your pages. E.g. `title`, `name`, `id`, etc. 	| required 	|
+| `output` 	| boolean | This is a built-in Jekyll collections value, and **must be set to `true`** in order for the generated `.md` pages to be compiled to html on `jekyll build`. 	| required 	|  
+| `pm_generate` 	| boolean | **Must be set to `true`** for **pagemaster** to run on a given collection. Switch this value to `false` after the pages are properly generated to avoid running the plugin again. 	| required 	|
+| `pm_input`   | string | The src input type of the data file. **Must be `yaml` or `csv`.** Also serves as the extension of the file.  | required   |
+| `pm_source` 	| string | The name of the data file you want to use to generate the .md pages. This file **must be present in the `_data` directory** in the root of your Jekyll site, and you **must not include the file extension.** 	| required 	|
+| `pm_key` 	| string | The **unique variable / primary key** in your data file that will be used to generate the file names of your pages. E.g. `title`, `name`, `id`, etc. 	| required 	|
 | `pm_directory` 	| string | The name of the directory where the generated pages will go. If not specified, the `source` file name will be used. 	| optional 	|
-| `pm_layout` 	| string | YAML-Splitter will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example,  `pm_layout: page_gen_layout` in will use the `page_gen_layout.html` template in the `_layouts` directory at the root of your site. | optional 	|
+| `pm_layout` 	| string | **pagemaster** will add layout information to the front-matter of the generated pages based on this value, so that Jekyll can build the html pages and style them automatically. For example,  `pm_layout: page_gen_layout` in will use the `page_gen_layout.html` template in the `_layouts` directory at the root of your site. | optional 	|
 
 
 ### Results
