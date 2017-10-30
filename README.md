@@ -1,4 +1,4 @@
-# pagemaster 🔀📄💥
+# pagemaster  [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster)
 ## A Jekyll plugin for generating a collection of markdown pages to /root from a CSV or YAML file
 
 #### How?
@@ -18,7 +18,7 @@ Kind of. But **pagemaster** gives you a lot more control and generates specifica
 Yes. Because the pages are generated to root as markdown, you only need to run the plugin locally once. From there GH pages will do what it normally does with Jekyll sites—compile vanilla yaml and markdown to html.
 
 ## To use
-1. `gem install pagemaster` or add `gem 'pagemaster, '1.0.0'` to your Gemfile.
+1. `$ gem install pagemaster` or add `gem 'pagemaster', '1.0.0'` to your Gemfile.
 2. Set-up your collection(s) in `_config.yml`. For example:
 ```yaml
 collections:
