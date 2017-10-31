@@ -19,7 +19,7 @@ Yes. Because the pages are generated to root as markdown, you only need to run t
 
 ## To use
 1. `$ gem install pagemaster` or add `gem 'pagemaster', '1.0.0'` to your Gemfile.
-2. Set-up your collection(s) in `_config.yml` with **agemaster** variables. For example:
+2. Set-up your collection(s) in `_config.yml` with **pagemaster** variables. For example:
 ```yaml
 collections:
       writers:
