@@ -11,7 +11,7 @@ If you have a data set for a Jekyll collection (e.g. a CSV of page titles, image
 
 ### Isn't this what Jekyll collections are for?
 
-Kind of. But **pagemaster** gives you a lot more control and generates specifically to the `root` of your site.
+Kind of. But **pagemaster** gives you a lot more control and generates specifically to the root of your site so that, if needed, you can add info into the .md pages before compiling them as .html.
 
 ### Will it work with GitHub Pages?
 
