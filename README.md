@@ -1,5 +1,8 @@
 # pagemaster [:gem:](https://rubygems.org/gems/pagemaster) [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster)
+
 ## A Jekyll plugin for generating a collection of markdown pages to site root from a CSV or YAML file
+
+<img src="https://media.giphy.com/media/XqpLGIQ7nMtqM/giphy.gif"/>
 
 ### How?
 
