@@ -1,4 +1,4 @@
-# pagemaster [:gem:](https://rubygems.org/gems/pagemaster) [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster)
+# pagemaster [:gem:](https://rubygems.org/gems/pagemaster) [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster) [![Coverage Status](https://coveralls.io/repos/github/mnyrop/pagemaster/badge.svg)](https://coveralls.io/github/mnyrop/pagemaster)
 
 ## A Jekyll plugin for generating a collection of markdown pages to site root from a CSV or YAML file
 
