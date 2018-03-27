@@ -1,6 +1,6 @@
 # pagemaster [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) [![Dependency Status](https://gemnasium.com/badges/github.com/mnyrop/pagemaster.svg)](https://gemnasium.com/github.com/mnyrop/pagemaster) [![Build Status](https://travis-ci.org/mnyrop/pagemaster.svg?branch=master)](https://travis-ci.org/mnyrop/pagemaster)
 
-## A Jekyll plugin for generating a collection of markdown pages to site root from .csv, .json, or .yml records
+### jekyll plugin for generating markdown collection pages from .csv, .json, or .yml records
 
 <img src="https://media.giphy.com/media/XqpLGIQ7nMtqM/giphy.gif"/>
 
@@ -37,8 +37,6 @@ collections:
     source: scientist-survey.json
     id_key: orcid
     layout: scientist-profile-page
-
-      ...
 ```
 4. Run (bundle exec) `jekyll pagemaster [collection-name(s)]`, e.g. `jekyll pagemaster writers scientists`
 
