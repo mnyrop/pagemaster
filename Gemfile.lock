@@ -98,7 +98,7 @@ DEPENDENCIES
   faker (~> 1.8)
   pagemaster!
   rspec (~> 3.5)
-  rubocop (~> 0.5)
+  rubocop (>= 0.5)
 
 BUNDLED WITH
    1.16.1
