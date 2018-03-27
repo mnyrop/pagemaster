@@ -1,103 +1,83 @@
-require 'yaml'
+include FileUtils
 require 'csv'
+require 'yaml'
+require 'json'
 
-Jekyll::Hooks.register :site, :after_reset do |site| # when site is re/built
-
-	for collection in site.collections
-		collection = collection[1]
-		if collection.metadata["output"] && collection.metadata["pm_generate"]
-
-			# grab collection variables from config
-			@input = collection.metadata["pm_input"].to_s
-			@dir = collection.metadata["pm_directory"].to_s
-			@name_key = collection.metadata["pm_key"].to_s
-			@src = collection.metadata["pm_source"].to_s
-			@layout = collection.metadata["pm_layout"].to_s
-
-			@layout ||= @src
-			@src = @src + "." + @input
-
-      # check if input is csv or yaml
-      unless @input == 'yaml' or @input == 'csv'
-        raise "pagemaster :: Input must be 'csv' or 'yaml'."
+# Jekyll comand to generate markdown collection pages from CSV/YML/JSON records
+class Pagemaster < Jekyll::Command
+  class << self
+    def init_with_program(prog)
+      prog.command(:pagemaster) do |command|
+        command.syntax 'pagemaster [options]'
+        command.description 'Generate md pages from collection data.'
+        command.action do |args|
+          execute(args)
+        end
       end
+    end
 
-			# check usability of dir name. gsub alphanumerics to (especially) avoid leading double underscores. then make directory.
-			if @dir.empty?
-				raise "pagemaster :: Target directory is undefined or unusable. Cannot generate pages. Specify dir in config and rebuild."
-			else
-				@targetdir = "_" + @dir.downcase.gsub(/[^\0-9a-z]/, '').to_s
-				FileUtils::mkdir_p @targetdir
-				puts ">> pagemaster :: Made directory " + @targetdir + " in root."
-			end
+    def execute(args)
+      config = YAML.load_file('_config.yml')
+      abort 'Cannot find collections in config' unless config.key?('collections')
+      perma = config['permalink'] == 'pretty' ? '/' : '.html'
+      args.each do |name|
+        abort "Cannot find #{name} in collection config" unless config['collections'].key? name
+        meta = {
+          'id_key'  => config['collections'][name].fetch('id_key'),
+          'layout'  => config['collections'][name].fetch('layout'),
+          'source'  => config['collections'][name].fetch('source')
+        }
+        data = ingest(meta)
+        generate_pages(name, meta, data, perma)
+      end
+    end
 
-			# check usability of name_key, to be used later when naming generated pages
-			if @name_key.empty?
-				raise "pagemaster ::  pm_key is undefined or unusable. Cannot generate pages. Specify pm_key in config and rebuild."
-			end
+    def ingest(meta)
+      src = '_data/' + meta['source']
+      puts "Processing #{src}...."
+      case File.extname(src)
+      when '.csv' then data = CSV.read(src, headers: true, encoding: 'utf-8').map(&:to_hash)
+      when '.json' then data = JSON.parse(File.read(src).encode('UTF-8'))
+      when '.yml' then data = YAML.load_file(src)
+      else abort 'Collection source must have a valid extension (.csv, .yml, or .json)'
+      end
+      detect_duplicates(meta, data)
+      data
+    rescue StandardError
+      abort "Cannot load #{src}. check for typos and rebuild."
+    end
 
-			def ingest(src) # takes + opens src file
-				begin
-					puts ">> pagemaster :: Loaded " + src + "."
-          if @input == 'yaml'
-            return YAML.load_file('_data/' + src)
-          else
-            return CSV.read('_data/' + src, :headers => true).map(&:to_hash)
-          end
-				rescue
-					raise "pagemaster :: Cannot load " + src + ". Check for typos and rebuild."
-				end
-			end
+    def detect_duplicates(meta, data)
+      ids = []
+      data.each { |d| ids << d[meta['id_key']] }
+      duplicates = ids.detect { |i| ids.count(i) > 1 } || []
+      abort "Your collection duplicate ids: \n#{duplicates}" unless duplicates.empty?
+    end
 
-			def uniqify(hashes, key) # takes opened src file as hash array
-				occurences = {} # hash list of slug names and # of occurences
-				hashes.each do |item|
-					if item[key].nil?
-						raise "pagemaster :: Source file has at least one missing value for pm_key='" + key + "'. Cannot generate page."
-					end
-					new_name = item[key].downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '').gsub(/-+/, '-') # gsub for slug
-					if occurences.has_key? new_name
-						occurences[new_name]+=1
-						safe_slug = new_name + "-" + occurences[new_name].to_s
-					else
-						occurences.store(new_name, 1)
-						safe_slug = new_name
-					end
-					item.store("slug", safe_slug)
-				end
-				return hashes # return changed yml array with unique, slugified names added
-			end
+    def generate_pages(name, meta, data, perma)
+      completed = 0
+      skipped = 0
+      dir = '_' + name
+      mkdir_p(dir)
+      data.each do |item|
+        pagename = slug(item.fetch(meta['id_key']))
+        pagepath = dir + '/' + pagename + '.md'
+        item['permalink'] = '/' + name + '/' + pagename + perma
+        item['layout'] = meta['layout']
+        if File.exist?(pagepath)
+          puts "#{pagename}.md already exits. Skipping."
+          skipped += 1
+        else
+          File.open(pagepath, 'w') { |file| file.write(item.to_yaml.to_s + '---') }
+          completed += 1
+        end
+      end
+    rescue StandardError
+      abort 'Pagemaster exited for some reason, most likely a missing or invalid id_key.'
+    end
 
-			# ingest data source, sort it and generate unique titles
-			data = uniqify(ingest(@src), @name_key)
-
-			# keep track of (valid) pages generated vs. (untitled, nonunique) pages skipped.
-			untitled, nonunique, valid = 0, 0, 0
-
-			# make pages
-			data.each do |item|
-				pagename = item["slug"]
-				pagepath = @targetdir + "/" + pagename + ".md"
-				layout_str = ""
-				unless @layout.empty?
-					layout_str = "layout: " + @layout
-				end
-				if pagename.empty?
-					puts ">> pagemaster :: Title for item is unspecified. Cannot generate page."
-					untitled+=1
-				elsif !File.exist?(pagepath)
-					File.open(pagepath, 'w') { |file| file.write( item.to_yaml.to_s + layout_str + "\n---" ) }
-					valid+=1
-				else
-					puts ">> pagemaster :: " + pagename + ".md already exits."
-					nonunique+=1
-				end
-			end
-
-			# log outcomes
-			puts ">> pagemaster :: " + valid.to_s + " pages were generated from " + @src + " to " + @targetdir + " directory."
-			puts ">> pagemaster :: " + nonunique.to_s + " items were skipped because of non-unique names."
-			puts ">> pagemaster :: " + untitled.to_s + " items were skipped because of missing titles."
-		end
-	end
+    def slug(str)
+      str.downcase.tr(' ', '_').gsub(/[^:\w-]/, '')
+    end
+  end
 end

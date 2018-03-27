@@ -1,0 +1,8 @@
+Style/MixinUsage:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 25
+Metrics/AbcSize:
+  Max: 25
+Metrics/LineLength:
+  Max: 100
