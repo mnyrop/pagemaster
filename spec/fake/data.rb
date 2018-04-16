@@ -15,7 +15,6 @@ module Fake
       when '.json' then File.open(path, 'w') { |f| f.write(data.to_json) }
       when '.yml' then File.open(path, 'w') { |f| f.write(data.to_yaml) }
       end
-      puts "Writing #{i} data to #{path}."
       Faker::Dune.unique.clear
       Faker::Lovecraft.unique.clear
     end
