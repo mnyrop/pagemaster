@@ -10,7 +10,7 @@ class Pagemaster < Jekyll::Command
       prog.command(:pagemaster) do |c|
         c.syntax 'pagemaster [options] [args]'
         c.description 'Generate md pages from collection data.'
-        c.option '--no-permalink', 'skips hardcoded permalink'
+        c.option 'no-perma', '--no-permalink', 'Skips adding hard-coded permalink'
         c.action { |args, options| execute(args, options) }
       end
     end
@@ -19,7 +19,7 @@ class Pagemaster < Jekyll::Command
       config = YAML.load_file('_config.yml')
       abort 'Cannot find collections in config' unless config.key?('collections')
       perma = false
-      perma = config['permalink'] == 'pretty' ? '/' : '.html' unless options.include? '--no-permalink'
+      perma = config['permalink'] == 'pretty' ? '/' : '.html' unless options.key? 'no-perma'
       args.each do |name|
         abort "Cannot find #{name} in collection config" unless config['collections'].key? name
         meta = {

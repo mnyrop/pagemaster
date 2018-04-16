@@ -21,7 +21,7 @@ Kind of! **pagemaster** actually uses Jekyll collections, but gives you a lot mo
 Kind of! Because the pages are generated to root as markdown, you only need to run the plugin locally once. From there GH pages will do what it normally does with Jekyll sites: compile vanilla yaml and markdown to html. So GitHub won't run it, but it shouldn't need to.
 
 ## To use
-1. Install by running `$ gem install pagemaster` or adding `gem 'pagemaster', '2.0.0'` to your Gemfile and running `$ bundle install`.
+1. Install by adding `gem 'pagemaster'` to the `:jekyll_plugins` group of your Gemfile and running `$ bundle install`.
 2. Add **pagemaster** as a plugin in `_config.yml`: `plugins: [ pagemaster ]`
 3. Set-up your collection(s) in `_config.yml` and add **pagemaster** variables. For example:
 
@@ -38,7 +38,12 @@ collections:
     id_key: orcid
     layout: scientist-profile-page
 ```
-4. Run (bundle exec) `jekyll pagemaster [collection-name(s)]`, e.g. `jekyll pagemaster writers scientists`
+4. Run $`bundle exec jekyll pagemaster [collection-name]`, e.g. $`bundle exec jekyll pagemaster writers scientists`.
+
+> __Note:__ By default, pagemaster generates hard-coded permalinks from the name of the directory and the names of the pages. If you want to skip this feature, you can run pagemaster with the `--no-permalink` option:
+
+
+> $`bundle exec jekyll pagemaster --no-permalink [collection-name]`.
 
 
 ### Results
