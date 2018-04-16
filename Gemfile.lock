@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pagemaster (2.0.0)
+    pagemaster (2.0.1)
       jekyll (~> 3.0)
 
 GEM
