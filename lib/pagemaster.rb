@@ -1,7 +1,8 @@
-include FileUtils
 require 'csv'
 require 'yaml'
 require 'json'
+
+include FileUtils
 
 # Jekyll comand to generate markdown collection pages from CSV/YML/JSON records
 class Pagemaster < Jekyll::Command

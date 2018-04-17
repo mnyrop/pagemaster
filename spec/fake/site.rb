@@ -1,4 +1,3 @@
-include FileUtils
 require 'jekyll'
 require 'yaml'
 
