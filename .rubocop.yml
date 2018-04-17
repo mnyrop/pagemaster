@@ -7,4 +7,4 @@ Metrics/AbcSize:
 Metrics/LineLength:
   Max: 100
 Metrics/BlockLength:
-  Max: 35
+  Max: 50
