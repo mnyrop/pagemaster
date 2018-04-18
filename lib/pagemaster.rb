@@ -1,25 +1,26 @@
-include FileUtils
 require 'csv'
 require 'yaml'
 require 'json'
+
+include FileUtils
 
 # Jekyll comand to generate markdown collection pages from CSV/YML/JSON records
 class Pagemaster < Jekyll::Command
   class << self
     def init_with_program(prog)
-      prog.command(:pagemaster) do |command|
-        command.syntax 'pagemaster [options]'
-        command.description 'Generate md pages from collection data.'
-        command.action do |args|
-          execute(args)
-        end
+      prog.command(:pagemaster) do |c|
+        c.syntax 'pagemaster [options] [args]'
+        c.description 'Generate md pages from collection data.'
+        c.option 'no-perma', '--no-permalink', 'Skips adding hard-coded permalink'
+        c.action { |args, options| execute(args, options) }
       end
     end
 
-    def execute(args)
+    def execute(args, options)
       config = YAML.load_file('_config.yml')
       abort 'Cannot find collections in config' unless config.key?('collections')
-      perma = config['permalink'] == 'pretty' ? '/' : '.html'
+      perma = false
+      perma = config['permalink'] == 'pretty' ? '/' : '.html' unless options.key? 'no-perma'
       args.each do |name|
         abort "Cannot find #{name} in collection config" unless config['collections'].key? name
         meta = {
@@ -62,7 +63,7 @@ class Pagemaster < Jekyll::Command
       data.each do |item|
         pagename = slug(item.fetch(meta['id_key']))
         pagepath = dir + '/' + pagename + '.md'
-        item['permalink'] = '/' + name + '/' + pagename + perma
+        item['permalink'] = '/' + name + '/' + pagename + perma if perma
         item['layout'] = meta['layout']
         if File.exist?(pagepath)
           puts "#{pagename}.md already exits. Skipping."

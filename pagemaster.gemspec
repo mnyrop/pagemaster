@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'pagemaster'
-  s.version       = '2.0.0'
+  s.version       = '2.0.1'
   s.date          = '2018-03-27'
   s.summary       = 'jekyll pagemaster plugin'
   s.description   = 'jekyll plugin for generating md pages from csv/json/yml'
