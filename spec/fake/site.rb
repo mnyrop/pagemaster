@@ -5,7 +5,7 @@ include FileUtils
 
 module Fake
   def self.site
-    site_dir = '_site'
+    site_dir = 'build'
     mkdir_p(site_dir)
     data_dir = site_dir + '/_data'
     mkdir_p(data_dir)
