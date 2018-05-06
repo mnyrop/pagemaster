@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'fake/helpers'
 require 'fake/site'
 require 'fake/data'
