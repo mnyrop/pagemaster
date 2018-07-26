@@ -1,8 +1,10 @@
-# pagemaster [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster)
-[![Libraries.io](https://img.shields.io/librariesio/github/mnyrop/pagemaster.svg)](https://libraries.io/github/mnyrop/pagemaster)
- [![Build Status](https://travis-ci.org/mnyrop/pagemaster.svg?branch=master)](https://travis-ci.org/mnyrop/pagemaster) [![Maintainability](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/maintainability)](https://codeclimate.com/github/mnyrop/pagemaster/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/test_coverage)](https://codeclimate.com/github/mnyrop/pagemaster/test_coverage)
+# pagemaster 
 
-### jekyll plugin for generating markdown collection pages from .csv, .json, or .yml records
+[![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) ![License](https://img.shields.io/badge/license-MIT-yellowgreen.svg) [![Build Status](https://travis-ci.org/mnyrop/pagemaster.svg?branch=master)](https://travis-ci.org/mnyrop/pagemaster) [![](https://img.shields.io/librariesio/github/mnyrop/pagemaster.svg)](https://libraries.io/github/mnyrop/pagemaster)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/maintainability)](https://codeclimate.com/github/mnyrop/pagemaster/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/test_coverage)](https://codeclimate.com/github/mnyrop/pagemaster/test_coverage)
+
+__jekyll plugin for generating markdown collection pages from .csv, .json, or .yml records__
 
 <img src="https://media.giphy.com/media/XqpLGIQ7nMtqM/giphy.gif"/>
 
