@@ -71,7 +71,7 @@ class Pagemaster < Jekyll::Command
         pagepath = dir + '/' + pagename + '.md'
         item['permalink'] = '/' + name + '/' + pagename + perma if perma
         item['layout'] = meta['layout']
-        if File.exist?(pagepath) and !meta['overwrite']
+        if File.exist?(pagepath)
           puts "#{pagename}.md already exits. Skipping."
           skipped += 1
         else
