@@ -26,7 +26,8 @@ class Pagemaster < Jekyll::Command
         meta = {
           'id_key'  => config['collections'][name].fetch('id_key'),
           'layout'  => config['collections'][name].fetch('layout'),
-          'source'  => config['collections'][name].fetch('source')
+          'source'  => config['collections'][name].fetch('source'),
+          'reprocess_erase' => config['collections'][name].fetch('reprocess_erase', false)
         }
         data = ingest(meta)
         generate_pages(name, meta, data, perma)
@@ -59,13 +60,18 @@ class Pagemaster < Jekyll::Command
       completed = 0
       skipped = 0
       dir = '_' + name
+
+      if meta['reprocess_erase']
+        FileUtils.rm_rf(dir)
+      end
+
       mkdir_p(dir)
       data.each do |item|
         pagename = slug(item.fetch(meta['id_key']))
         pagepath = dir + '/' + pagename + '.md'
         item['permalink'] = '/' + name + '/' + pagename + perma if perma
         item['layout'] = meta['layout']
-        if File.exist?(pagepath)
+        if File.exist?(pagepath) and !meta['overwrite']
           puts "#{pagename}.md already exits. Skipping."
           skipped += 1
         else
