@@ -11,7 +11,8 @@ class Pagemaster < Jekyll::Command
       prog.command(:pagemaster) do |c|
         c.syntax 'pagemaster [options] [args]'
         c.description 'Generate md pages from collection data.'
-        c.option 'no-perma', '--no-permalink', 'Skips adding hard-coded permalink'
+        c.option 'no-perma', '--no-permalink', 'Skips adding hard-coded permalink.'
+        c.option 'force', '--force', 'Erases pre-existing collection before generating.'
         c.action { |args, options| execute(args, options) }
       end
     end
@@ -21,17 +22,16 @@ class Pagemaster < Jekyll::Command
       abort 'Cannot find collections in config' unless config.key?('collections')
       perma = false
       perma = config['permalink'] == 'pretty' ? '/' : '.html' unless options.key? 'no-perma'
+      force = options['force'] || false
       args.each do |name|
         abort "Cannot find #{name} in collection config" unless config['collections'].key? name
         meta = {
           'id_key'  => config['collections'][name].fetch('id_key'),
           'layout'  => config['collections'][name].fetch('layout'),
-          'source'  => config['collections'][name].fetch('source'),
-          'reprocess_erase' => config['collections'][name].fetch('reprocess_erase', false),
-          'overwrite' => config['collections'][name].fetch('overwrite', false)
+          'source'  => config['collections'][name].fetch('source')
         }
         data = ingest(meta)
-        generate_pages(name, meta, data, perma)
+        generate_pages(name, meta, data, perma, force)
       end
     end
 
@@ -57,12 +57,12 @@ class Pagemaster < Jekyll::Command
       abort "Your collection duplicate ids: \n#{duplicates}" unless duplicates.empty?
     end
 
-    def generate_pages(name, meta, data, perma)
+    def generate_pages(name, meta, data, perma, force)
       completed = 0
       skipped = 0
       dir = '_' + name
 
-      if meta['reprocess_erase']
+      if force
         FileUtils.rm_rf(dir)
       end
 
@@ -72,7 +72,7 @@ class Pagemaster < Jekyll::Command
         pagepath = dir + '/' + pagename + '.md'
         item['permalink'] = '/' + name + '/' + pagename + perma if perma
         item['layout'] = meta['layout']
-        if File.exist?(pagepath) and !meta['overwrite']
+        if File.exist?(pagepath) and !force
           puts "#{pagename}.md already exits. Skipping."
           skipped += 1
         else
