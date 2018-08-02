@@ -62,7 +62,10 @@ class Pagemaster < Jekyll::Command
       dir       = "_#{name}"
       perma     = opts.fetch(:no_perma, meta[:ext])
 
-      FileUtils.rm_rf(dir) if opts.fetch(:force, false)
+      if opts.fetch(:force, false)
+        FileUtils.rm_rf(dir)
+        puts "Overwriting #{dir} directory with --force."
+      end
 
       mkdir_p(dir)
       data.each do |item|
