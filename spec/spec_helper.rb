@@ -18,9 +18,8 @@ describe 'pagemaster' do
   dirs = args.map { |a| '_' + a }
 
   context 'with --no-permalink' do
-    options = { 'no-perma' => true }
     it 'throws no errors' do
-      Pagemaster.execute(args, options)
+      Pagemaster.execute(args, no_perma: true)
     end
     it 'makes the correct dirs' do
       dirs.each { |dir| expect(exist(dir)) }
@@ -36,11 +35,25 @@ describe 'pagemaster' do
     end
   end
 
+  context 'with --force' do
+    it 'throws no errors' do
+      Pagemaster.execute(args, force: true)
+    end
+    it 'deletes the dir' do
+      # fill in
+    end
+    it 'regenerates md pages' do
+      # fill in
+    end
+  end
+
   context 'with default options' do
-    options = {}
     it 'throws no errors' do
       rm_rf(dirs)
-      Pagemaster.execute(args, options)
+      Pagemaster.execute(args)
+    end
+    it 'skips existing pages' do
+      # fill in
     end
     it 'writes permalinks' do
       Dir.glob(dirs.first + '/*.md').each do |p|

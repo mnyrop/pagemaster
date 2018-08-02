@@ -11,77 +11,73 @@ class Pagemaster < Jekyll::Command
       prog.command(:pagemaster) do |c|
         c.syntax 'pagemaster [options] [args]'
         c.description 'Generate md pages from collection data.'
-        c.option 'no-perma', '--no-permalink', 'Skips adding hard-coded permalink.'
-        c.option 'force', '--force', 'Erases pre-existing collection before generating.'
+        c.option :no_perma, '--no-permalink', 'Skips adding hard-coded permalink.'
+        c.option :force, '--force', 'Erases pre-existing collection before regenerating.'
         c.action { |args, options| execute(args, options) }
       end
     end
 
-    def execute(args, options)
+    def execute(args, opts = {})
       config = YAML.load_file('_config.yml')
       abort 'Cannot find collections in config' unless config.key?('collections')
-      perma = false
-      perma = config['permalink'] == 'pretty' ? '/' : '.html' unless options.key? 'no-perma'
-      force = options['force'] || false
       args.each do |name|
         abort "Cannot find #{name} in collection config" unless config['collections'].key? name
         meta = {
-          'id_key'  => config['collections'][name].fetch('id_key'),
-          'layout'  => config['collections'][name].fetch('layout'),
-          'source'  => config['collections'][name].fetch('source')
+          id_key: config['collections'][name].fetch('id_key'),
+          layout: config['collections'][name].fetch('layout'),
+          source: config['collections'][name].fetch('source'),
+          ext:    config.fetch('permalink', '') == 'pretty' ? '/' : '.html'
         }
         data = ingest(meta)
-        generate_pages(name, meta, data, perma, force)
+        generate_pages(name, meta, data, opts)
       end
     end
 
     def ingest(meta)
-      src = '_data/' + meta['source']
+      src = "_data/#{meta[:source]}"
       puts "Processing #{src}...."
-      case File.extname(src)
-      when '.csv' then data = CSV.read(src, headers: true, encoding: 'utf-8').map(&:to_hash)
-      when '.json' then data = JSON.parse(File.read(src).encode('UTF-8'))
-      when '.yml' then data = YAML.load_file(src)
-      else abort 'Collection source must have a valid extension (.csv, .yml, or .json)'
-      end
+      data = case File.extname(src)
+             when '.csv'
+               CSV.read(src, headers: true).map(&:to_hash)
+             when '.json'
+               JSON.parse(File.read(src).encode('UTF-8'))
+             when '.yml'
+               YAML.load_file(src)
+             else
+               raise 'Collection source must have a valid extension (.csv, .yml, or .json)'
+             end
       detect_duplicates(meta, data)
       data
     rescue StandardError
-      abort "Cannot load #{src}. check for typos and rebuild."
+      raise "Cannot load #{src}. check for typos and rebuild."
     end
 
     def detect_duplicates(meta, data)
-      ids = []
-      data.each { |d| ids << d[meta['id_key']] }
+      ids = data.map { |d| d[meta[:data]] }
       duplicates = ids.detect { |i| ids.count(i) > 1 } || []
-      abort "Your collection duplicate ids: \n#{duplicates}" unless duplicates.empty?
+      raise "Your collection duplicate ids: \n#{duplicates}" unless duplicates.empty?
     end
 
-    def generate_pages(name, meta, data, perma, force)
-      completed = 0
-      skipped = 0
-      dir = '_' + name
+    def generate_pages(name, meta, data, opts)
+      dir       = "_#{name}"
+      perma     = opts.fetch(:no_perma, meta[:ext])
 
-      if force
-        FileUtils.rm_rf(dir)
-      end
+      FileUtils.rm_rf(dir) if opts.fetch(:force, false)
 
       mkdir_p(dir)
       data.each do |item|
-        pagename = slug(item.fetch(meta['id_key']))
-        pagepath = dir + '/' + pagename + '.md'
-        item['permalink'] = '/' + name + '/' + pagename + perma if perma
-        item['layout'] = meta['layout']
-        if File.exist?(pagepath) and !force
+        pagename = slug(item.fetch(meta[:id_key]))
+        pagepath = "#{dir}/#{pagename}.md"
+        item['permalink'] = "/#{name}/#{pagename}#{perma}" if perma
+        item['layout']    = meta[:layout]
+        if File.exist?(pagepath)
           puts "#{pagename}.md already exits. Skipping."
-          skipped += 1
         else
-          File.open(pagepath, 'w') { |file| file.write(item.to_yaml.to_s + '---') }
-          completed += 1
+          File.open(pagepath, 'w') { |f| f.write("#{item.to_yaml}---") }
         end
       end
     rescue StandardError
-      abort 'Pagemaster exited for some reason, most likely a missing or invalid id_key.'
+      raise 'Pagemaster exited for some reason, most likely a missing or invalid id_key.'
     end
 
     def slug(str)
