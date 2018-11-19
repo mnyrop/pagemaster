@@ -26,6 +26,7 @@ class Pagemaster < Jekyll::Command
           id_key: config['collections'][name].fetch('id_key'),
           layout: config['collections'][name].fetch('layout'),
           source: config['collections'][name].fetch('source'),
+          subdir: config.fetch('source', ''),
           ext:    config.fetch('permalink', '') == 'pretty' ? '/' : '.html'
         }
         data = ingest(meta)
