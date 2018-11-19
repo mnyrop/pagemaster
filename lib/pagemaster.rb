@@ -35,7 +35,7 @@ class Pagemaster < Jekyll::Command
     end
 
     def ingest(meta)
-      src = File.join(meta[:subdir], "_data", meta[:source])
+      src = File.join((meta[:subdir].to_s.strip.empty? ? meta[:subdir] : "." ), "_data", meta[:source])
       puts "Processing #{src}...."
       data = case File.extname(src)
              when '.csv'
@@ -60,7 +60,7 @@ class Pagemaster < Jekyll::Command
     end
 
     def generate_pages(name, meta, data, opts)
-      dir       = File.join(meta[:subdir], "_#{name}")
+      dir       = File.join((meta[:subdir].to_s.strip.empty? ? meta[:subdir] : "." ), "_#{name}")
       perma     = opts.fetch(:no_perma, meta[:ext])
 
       if opts.fetch(:force, false)
