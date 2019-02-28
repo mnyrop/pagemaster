@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'pagemaster'
-  s.version       = '2.0.2'
+  s.version       = '2.1.0'
   s.date          = '2018-03-27'
   s.summary       = 'jekyll pagemaster plugin'
   s.description   = 'jekyll plugin for generating md pages from csv/json/yml'
@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'jekyll', '~> 3.8'
 
   s.add_development_dependency 'bundler', '> 1.1', '< 3.0'
-  s.add_development_dependency 'faker', '~> 1.9'
   s.add_development_dependency 'rspec', '~> 3.8'
   s.add_development_dependency 'rubocop', '>= 0.5'
 end
