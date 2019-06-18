@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 
 #constants
-ROOT    = `pwd`.strip.freeze
-SAMPLE  = "#{ROOT}/spec/sample_site".freeze
-BUILD   = "#{ROOT}/test_build".freeze
+ROOT    = `pwd`.strip
+SAMPLE  = "#{ROOT}/spec/sample_site"
+BUILD   = "#{ROOT}/test_build"
 
 # helper methods
 def quiet_stdout

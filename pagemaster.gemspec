@@ -1,17 +1,21 @@
-Gem::Specification.new do |s|
-  s.name          = 'pagemaster'
-  s.version       = '2.1.0'
-  s.date          = '2018-03-27'
-  s.summary       = 'jekyll pagemaster plugin'
-  s.description   = 'jekyll plugin for generating md pages from csv/json/yml'
-  s.authors       = ['Marii Nyrop']
-  s.files         = ['lib/pagemaster.rb']
-  s.require_path  = 'lib'
-  s.homepage      = 'https://github.com/mnyrop/pagemaster'
-  s.license       = 'MIT'
+# frozen_string_literal: true
 
-  s.add_dependency 'jekyll', '~> 3.8'
+Gem::Specification.new do |spec|
+  spec.name          = 'pagemaster'
+  spec.version       = '2.1.0'
+  spec.date          = '2018-03-27'
+  spec.summary       = 'jekyll pagemaster plugin'
+  spec.description   = 'jekyll plugin for generating md pages from csv/json/yml'
+  spec.authors       = ['Marii Nyrop']
+  spec.files         = ['lib/pagemaster.rb']
+  spec.require_path  = 'lib'
+  spec.homepage      = 'https://github.com/mnyrop/pagemaster'
+  spec.license       = 'MIT'
 
-  s.add_development_dependency 'rspec', '~> 3.8'
-  s.add_development_dependency 'rubocop', '>= 0.5'
+  spec.add_runtime_dependency 'jekyll', '~> 3.8'
+  spec.add_runtime_dependency 'rainbow', '~> 3.0'
+  spec.add_runtime_dependency 'safe_yaml', '~> 1.0'
+
+  spec.add_development_dependency 'rspec', '~> 3.8'
+  spec.add_development_dependency 'rubocop', '>= 0.5'
 end
