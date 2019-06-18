@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubygems
-require 'rubygems'
-
 # stdlib
 require 'csv'
 require 'fileutils'

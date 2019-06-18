@@ -12,6 +12,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/mnyrop/pagemaster'
   spec.license       = 'MIT'
 
+  spec.required_ruby_version = '>= 2.4'
+
   spec.add_runtime_dependency 'jekyll', '~> 3.8'
   spec.add_runtime_dependency 'rainbow', '~> 3.0'
   spec.add_runtime_dependency 'safe_yaml', '~> 1.0'
