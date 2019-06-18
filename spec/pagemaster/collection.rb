@@ -2,7 +2,7 @@
 
 describe Pagemaster::Collection do
   include_context 'shared'
-  before(:all)  { Pagemaster::Test.reset }
+  before(:all) { Pagemaster::Test.reset }
 
   describe '.new' do
     let(:collection) { site.collections.first }
@@ -13,10 +13,6 @@ describe Pagemaster::Collection do
 
     it 'gets the id_key' do
       expect(collection.id_key).to be_a(String)
-    end
-
-    it 'gets the layout' do
-      expect(collection.layout).to be_a(String)
     end
   end
 end

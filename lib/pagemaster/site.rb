@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 module Pagemaster
+  #
+  #
   class Site
     attr_reader :config, :args, :opts, :collections
 
     #
     #
-    def initialize(config = nil, args, opts)
-      @config           = config || config_from_file
+    def initialize(args, opts, config = nil)
       @args             = args
       @opts             = opts
-      @collections      = collections
+      @config           = config || config_from_file
+      @collections      = parse_collections
       @collections_dir  = @config.dig 'collections_dir'
       @source_dir       = @config.dig 'source_dir'
 
@@ -26,10 +28,10 @@ module Pagemaster
 
     #
     #
-    def collections
+    def parse_collections
       collections_config = @config.dig 'collections'
 
-      raise Error::InvalidConfig, "Cannot find collections settings in _config.yml" if collections_config.nil?
+      raise Error::InvalidConfig, "Cannot find 'collections' key in _config.yml" if collections_config.nil?
 
       args.map do |a|
         raise Error::InvalidArgument, "Cannot find requested collection #{a} in _config.yml" unless collections_config.key? a
@@ -43,7 +45,7 @@ module Pagemaster
     def generate_pages
       @collections.each { |c| c.generate_pages(@opts, @collections_dir, @source_dir) }
 
-      puts Rainbow("Done ✔").green
+      puts Rainbow('Done ✔').green
     end
   end
 end

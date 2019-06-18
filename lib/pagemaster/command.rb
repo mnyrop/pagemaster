@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Pagemaster
+  #
+  #
   class Command < Jekyll::Command
     def self.init_with_program(prog)
       prog.command(:pagemaster) do |c|

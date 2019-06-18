@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Pagemaster
+  #
+  #
   class Collection
     attr_reader :source, :id_key, :layout, :data
 

@@ -2,7 +2,7 @@
 
 describe Pagemaster::Site do
   include_context 'shared'
-  before(:all)  { Pagemaster::Test.reset }
+  before(:all) { Pagemaster::Test.reset }
 
   describe '.new' do
     it 'runs without errors' do

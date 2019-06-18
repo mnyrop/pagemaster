@@ -2,7 +2,7 @@
 
 require 'fileutils'
 
-#constants
+# constants
 ROOT    = `pwd`.strip
 SAMPLE  = "#{ROOT}/spec/sample_site"
 BUILD   = "#{ROOT}/test_build"
@@ -30,11 +30,13 @@ def quiet_stdout
   end
 end
 
-module Pagemaster::Test
-  def self.reset
-    Dir.chdir(ROOT)
-    FileUtils.rm_r(BUILD) if File.directory?(BUILD)
-    FileUtils.copy_entry(SAMPLE, BUILD)
-    Dir.chdir(BUILD)
+module Pagemaster
+  module Test
+    def self.reset
+      Dir.chdir(ROOT)
+      FileUtils.rm_r(BUILD) if File.directory?(BUILD)
+      FileUtils.copy_entry(SAMPLE, BUILD)
+      Dir.chdir(BUILD)
+    end
   end
 end

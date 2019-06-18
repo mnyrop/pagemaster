@@ -16,4 +16,6 @@ require_relative 'pagemaster/command'
 require_relative 'pagemaster/error'
 require_relative 'pagemaster/site'
 
-module Pagemaster ; end
+#
+#
+module Pagemaster; end
