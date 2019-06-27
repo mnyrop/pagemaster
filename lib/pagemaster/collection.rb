@@ -56,6 +56,8 @@ module Pagemaster
     #
     #
     def overwrite_pages
+      return unless @dir
+
       FileUtils.rm_rf @dir
       puts Rainbow("Overwriting #{@dir} directory with --force.").cyan
     end
@@ -64,7 +66,7 @@ module Pagemaster
     #
     def generate_pages(opts, collections_dir, source_dir)
       @opts = opts
-      @dir  = File.join([source_dir, collections_dir, "_#{@name}"].compact)
+      @dir  = File.join [source_dir, collections_dir, "_#{@name}"].compact
 
       overwrite_pages if @opts.fetch :force, false
       FileUtils.mkdir_p @dir

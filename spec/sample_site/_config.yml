@@ -10,11 +10,11 @@ collections:
     layout: test
   json_collection:
     output: true
-    source: valid.csv
+    source: valid.json
     id_key: pid
     layout: test
   yaml_collection:
     output: true
-    source: valid.csv
+    source: valid.yml
     id_key: pid
     layout: test
