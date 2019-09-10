@@ -13,6 +13,20 @@ shared_context 'shared', shared_context: :metadata do
   let(:config)  { YAML.load_file "#{BUILD}/_config.yml" }
   let(:opts)    { {} }
   let(:site)    { Pagemaster::Site.new args, opts }
+  let(:page_paths) do
+    ['_csv_collection/img_item_1.md',
+     '_csv_collection/img_item_2.md',
+     '_csv_collection/dir_imgs_item.md',
+     '_csv_collection/pdf_imgs_item.md',
+     '_json_collection/img_item_1.md',
+     '_json_collection/img_item_2.md',
+     '_json_collection/dir_imgs_item.md',
+     '_json_collection/pdf_imgs_item.md',
+     '_yaml_collection/img_item_1.md',
+     '_yaml_collection/img_item_2.md',
+     '_yaml_collection/dir_imgs_item.md',
+     '_yaml_collection/pdf_imgs_item.md']
+  end
 end
 
 require_relative 'pagemaster/site'

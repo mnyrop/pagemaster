@@ -4,7 +4,7 @@ module Pagemaster
   #
   #
   class Collection
-    attr_reader :source, :id_key, :layout, :data
+    attr_reader :source, :id_key, :layout, :data, :dir
 
     #
     #
@@ -65,15 +65,15 @@ module Pagemaster
     #
     #
     def generate_pages(opts, collections_dir, source_dir)
-      @opts = opts
-      @dir  = File.join [source_dir, collections_dir, "_#{@name}"].compact
+      @opts   = opts
+      @dir    = File.join [source_dir, collections_dir, "_#{@name}"].compact
 
       overwrite_pages if @opts.fetch :force, false
       FileUtils.mkdir_p @dir
       @data = ingest_source
       validate_data
 
-      @data.each do |d|
+      @data.map do |d|
         path = "#{@dir}/#{slug d[@id_key]}.md"
         d['layout'] = @config['layout'] if @config.key? 'layout'
         if File.exist? path
@@ -81,6 +81,7 @@ module Pagemaster
         else
           File.open(path, 'w') { |f| f.write("#{d.to_yaml}---") }
         end
+        path
       end
     end
 

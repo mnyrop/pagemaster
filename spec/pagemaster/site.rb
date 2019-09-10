@@ -37,8 +37,8 @@ describe Pagemaster::Site do
   end
 
   describe '.generate_pages' do
-    it 'runs without errors' do
-      site.generate_pages
+    it 'generates expected pages' do
+      expect(site.generate_pages).to eq page_paths
     end
   end
 end

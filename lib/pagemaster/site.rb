@@ -43,9 +43,12 @@ module Pagemaster
     #
     #
     def generate_pages
-      @collections.each { |c| c.generate_pages(@opts, @collections_dir, @source_dir) }
-
+      paths = @collections.map do |c|
+        c.generate_pages @opts, @collections_dir, @source_dir
+      end.flatten
       puts Rainbow('Done ✔').green
+
+      paths
     end
   end
 end
