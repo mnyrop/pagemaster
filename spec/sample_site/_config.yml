@@ -1,0 +1,20 @@
+title: ''
+url: ''
+baseurl: ''
+
+collections:
+  csv_collection:
+    output: true
+    source: valid.csv
+    id_key: pid
+    layout: test
+  json_collection:
+    output: true
+    source: valid.json
+    id_key: pid
+    layout: test
+  yaml_collection:
+    output: true
+    source: valid.yml
+    id_key: pid
+    layout: test

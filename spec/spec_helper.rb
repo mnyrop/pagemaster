@@ -1,66 +1,33 @@
+# frozen_string_literal: true
+
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'spec'
+end
 
-require 'fake/helpers'
-require 'fake/site'
-require 'fake/data'
-
-$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'pagemaster'
+require 'setup'
 
-QUIET = !ENV['DEBUG']
-
-describe 'pagemaster' do
-  Fake.site
-  collection_data = Fake.data
-  args = collection_data.map { |c| c[0] }
-  add_collections_to_config(args, collection_data)
-
-  let(:dirs) { args.map { |a| "_#{a}" } }
-
-  context 'with --no-permalink' do
-    it 'throws no errors' do
-      expect { quiet_stdout { Pagemaster.execute(args, no_perma: true) } }.not_to raise_error
-    end
-    it 'makes the correct dirs' do
-      dirs.each { |dir| expect(exist(dir)) }
-    end
-    it 'generates md pages' do
-      dirs.each { |dir| expect(Dir.glob("#{dir}/*.md")) }
-    end
-    it 'skips writing permalinks' do
-      Dir.glob("#{dirs.first}/*.md").each do |p|
-        page = YAML.load_file(p)
-        expect(!page.key?('permalink'))
-      end
-    end
-  end
-
-  context 'with --force' do
-    it 'throws no errors' do
-      expect { quiet_stdout { Pagemaster.execute(args, force: true) } }.not_to raise_error
-    end
-    it 'deletes the dir' do
-      expect { Pagemaster.execute(args, force: true) }.to output(/.*Overwriting.*/).to_stdout
-      expect { Pagemaster.execute(args, force: true) }.not_to output(/.*Skipping.*/).to_stdout
-    end
-    it 'regenerates md pages' do
-      dirs.each { |dir| expect(Dir.glob("#{dir}/*.md")) }
-    end
-  end
-
-  context 'with default options' do
-    it 'throws no errors' do
-      expect { quiet_stdout { Pagemaster.execute(args) } }.not_to raise_error
-    end
-    it 'skips existing pages' do
-      expect { Pagemaster.execute([args.first]) }.to output(/.*Skipping.*/).to_stdout
-    end
-    it 'writes permalinks' do
-      Dir.glob("#{dirs.first}/*.md").each do |p|
-        page = YAML.load_file(p)
-        expect(page.key?('permalink'))
-      end
-    end
+shared_context 'shared', shared_context: :metadata do
+  let(:args)    { %w[csv_collection json_collection yaml_collection] }
+  let(:config)  { YAML.load_file "#{BUILD}/_config.yml" }
+  let(:opts)    { {} }
+  let(:site)    { Pagemaster::Site.new args, opts }
+  let(:page_paths) do
+    ['_csv_collection/img_item_1.md',
+     '_csv_collection/img_item_2.md',
+     '_csv_collection/dir_imgs_item.md',
+     '_csv_collection/pdf_imgs_item.md',
+     '_json_collection/img_item_1.md',
+     '_json_collection/img_item_2.md',
+     '_json_collection/dir_imgs_item.md',
+     '_json_collection/pdf_imgs_item.md',
+     '_yaml_collection/img_item_1.md',
+     '_yaml_collection/img_item_2.md',
+     '_yaml_collection/dir_imgs_item.md',
+     '_yaml_collection/pdf_imgs_item.md']
   end
 end
+
+require_relative 'pagemaster/site'
+require_relative 'pagemaster/collection'

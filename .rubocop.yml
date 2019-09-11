@@ -1,3 +1,5 @@
+AllCops:
+  TargetRubyVersion: 2.4
 Style/MixinUsage:
   Enabled: false
 Metrics/MethodLength:
@@ -6,5 +8,11 @@ Metrics/AbcSize:
   Max: 25
 Metrics/LineLength:
   Max: 100
+  IgnoredPatterns:
+    - 'raise'
+    - 'puts'
+    - 'expect'
 Metrics/BlockLength:
   Max: 50
+Layout/EmptyComment:
+  Enabled: false # Temporary

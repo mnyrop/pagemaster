@@ -1,4 +1,4 @@
-# pagemaster 
+# pagemaster
 
 [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) ![License](https://img.shields.io/badge/license-MIT-yellowgreen.svg) [![Build Status](https://travis-ci.org/mnyrop/pagemaster.svg?branch=master)](https://travis-ci.org/mnyrop/pagemaster) [![](https://img.shields.io/librariesio/github/mnyrop/pagemaster.svg)](https://libraries.io/github/mnyrop/pagemaster)
 
@@ -25,8 +25,18 @@ Kind of! **pagemaster** actually uses Jekyll collections, but gives you a lot mo
 Kind of! Because the pages are generated to root as markdown, you only need to run the plugin locally once. From there GH pages will do what it normally does with Jekyll sites: compile vanilla yaml and markdown to html. So GitHub won't run it, but it shouldn't need to.
 
 ## To use
-1. Install by adding `gem 'pagemaster'` to the `:jekyll_plugins` group of your Gemfile and running `$ bundle install`.
-2. Add **pagemaster** as a plugin in `_config.yml`: `plugins: [ pagemaster ]`
+1. Add `pagemaster` to the `:jekyll_plugins` group of your `Gemfile` like so:
+    ```rb
+    group :jekyll_plugins do
+      gem 'pagemaster'
+    end
+    ```
+2. Run `$ bundle install`.
+2. Add **pagemaster** as a plugin in `_config.yml` like so:
+  ```yml
+  plugins:
+    - pagemaster
+  ```
 3. Set-up your collection(s) in `_config.yml` and add **pagemaster** variables. For example:
 
 ```yaml
@@ -43,12 +53,6 @@ collections:
     layout: scientist-profile-page
 ```
 4. Run $`bundle exec jekyll pagemaster [collection-name]`, e.g. $`bundle exec jekyll pagemaster writers scientists`.
-
-> __Note:__ By default, pagemaster generates hard-coded permalinks from the name of the directory and the names of the pages. If you want to skip this feature, you can run pagemaster with the `--no-permalink` option:
-
-
-> $`bundle exec jekyll pagemaster --no-permalink [collection-name]`.
-
 
 ### Results
 
