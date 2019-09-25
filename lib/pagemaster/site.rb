@@ -20,22 +20,20 @@ module Pagemaster
         raise Error::MissingArgs, "You must specify one or more collections after 'jekyll pagemaster'"
       end
 
-      if @collections.empty?
-        raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config"
-      end
+      raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config" if @collections.empty?
     end
 
     #
     #
     def config_from_file
-      puts("Reading configuration")
-      return YAML.load_file("#{`pwd`.strip()}/_config.yml")
+      puts('Reading configuration')
+      YAML.load_file("#{`pwd`.strip}/_config.yml")
     end
 
     #
     #
     def parse_collections
-      puts("Parsing collection")
+      puts('Parsing collection')
       collections_config = @config.dig('collections')
 
       if collections_config.nil?
@@ -58,8 +56,8 @@ module Pagemaster
       paths = @collections.map do |collection_item|
         collection_item.generate_pages(@opts, @collections_dir, @source_dir)
       end.flatten
-      puts Rainbow("Done ✔").green
-      return paths
+      puts Rainbow('Done ✔').green
+      paths
     end
   end
 end

@@ -11,7 +11,7 @@ module Pagemaster
         c.option :force, '--force', 'Erases pre-existing collection before regenerating.'
         c.action do |args, options|
           site = Pagemaster::Site.new(args, options)
-          puts("Generating pages")
+          puts('Generating pages')
           site.generate_pages
         end
       end

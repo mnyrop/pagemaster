@@ -10,11 +10,11 @@ module Pagemaster
     #
     #
     def initialize(name, config)
-      @name       = name
-      @config     = config
-      @source     = fetch('source')
-      @id_key     = fetch('id_key')
-      @title_key  = fetch('title_key')
+      @name = name
+      @config = config
+      @source = fetch('source')
+      @id_key = fetch('id_key')
+      @title_key = fetch('title_key')
     end
 
     # Go through the configuration and return the value for the given key
@@ -27,14 +27,14 @@ module Pagemaster
       @config.dig(key)
     end
 
-    # Read the source file for the data set 
-    # and parse it according to the file type 
+    # Read the source file for the data set
+    # and parse it according to the file type
     # Raise an error if
     #  * The file does not exist
     #  * The file extension is invalid
     #  * The file could not be parsed
     def ingest_source
-      puts("Ingesting source")
+      puts('Ingesting source')
       file = "_data/#{@source}"
       raise Error::InvalidSource, "Cannot find source file #{file}" unless File.exist?(file)
 
@@ -56,20 +56,19 @@ module Pagemaster
     # Raises an error if the criteria are not met.
     # @return nothing
     def validate_data
-      puts("Validating")
+      puts('Validating')
 
-      puts("Checking if ID keys are present")
+      puts('Checking if ID keys are present')
       ids = @data.map { |data_entry| data_entry.dig(@id_key) }
       unless ids.all?
         raise Error::InvalidCollection, "One or more items in collection '#{@name}' is missing required id for the id_key '#{@id_key}'"
       end
 
-      puts("Checking for duplicate ID keys")
+      puts('Checking for duplicate ID keys')
       duplicates = ids.detect { |id| ids.count(id) > 1 } || []
-      unless duplicates.empty?
-        raise Error::InvalidCollection, "The collection '#{@name}' has the following duplicate ids for id_key #{@id_key}: \n#{duplicates}"
-      end
-      puts(Rainbow("Validation complete").green)
+      raise Error::InvalidCollection, "The collection '#{@name}' has the following duplicate ids for id_key #{@id_key}: \n#{duplicates}" unless duplicates.empty?
+
+      puts(Rainbow('Validation complete').green)
     end
 
     # Removes the output directory if it exists
@@ -81,11 +80,29 @@ module Pagemaster
       puts Rainbow("Overwriting #{@dir} directory with --force.").cyan
     end
 
+    def process_data_entry(data_entry)
+      puts("Processing #{data_entry}")
+      path = "#{@dir}/#{slug(data_entry[@id_key])}.md"
+      title = data_entry.dig(@title_key)
+      new_entry = {}
+      new_entry['layout'] = @config['layout'] if @config.key?('layout')
+      new_entry['title'] = title
+      new_entry['data'] = data_entry
+
+      if File.exist?(path)
+        puts(Rainbow("#{path} already exits. Skipping.").cyan)
+      else
+        File.open(path, 'w') { |file| file.write("#{new_entry.to_yaml}---") }
+      end
+      puts(Rainbow("Written #{path}").cyan)
+      path
+    end
+
     #
     #
     def generate_pages(opts, collections_dir, source_dir)
-      @opts   = opts
-      @dir    = File.join [source_dir, collections_dir, "_#{@name}"].compact
+      @opts = opts
+      @dir = File.join [source_dir, collections_dir, "_#{@name}"].compact
 
       remove_output_dir if @opts.fetch(:force, false)
       FileUtils.mkdir_p(@dir)
@@ -94,26 +111,10 @@ module Pagemaster
 
       processed_paths = []
       @data.map do |data_entry|
-        puts("Processing #{data_entry}")
-        path = "#{@dir}/#{slug(data_entry[@id_key])}.md"
-        title = data_entry.dig(@title_key)
-        new_entry = {}
-        puts("\tlayout")
-        new_entry['layout'] = @config['layout']       if @config.key?('layout')
-        puts("\ttitle: #{title}")
-        new_entry['title']  = title
-        puts("\tdata")
-        new_entry['data']   = data_entry
-
-        if File.exist?(path)
-          puts(Rainbow("#{path} already exits. Skipping.").cyan)
-        else
-          File.open(path, 'w') { |file| file.write("#{new_entry.to_yaml}---") }
-        end
-        puts(Rainbow("Written #{path}").cyan)
+        path = process_data_entry(data_entry)
         processed_paths.append(path)
       end
-      return processed_paths
+      processed_paths
     end
 
     #
