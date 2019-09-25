@@ -112,7 +112,7 @@ module Pagemaster
       processed_paths = []
       @data.map do |data_entry|
         path = process_data_entry(data_entry)
-        processed_paths.append(path)
+        processed_paths << path
       end
       processed_paths
     end
