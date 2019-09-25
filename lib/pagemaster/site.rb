@@ -13,42 +13,53 @@ module Pagemaster
       @opts             = opts
       @config           = config || config_from_file
       @collections      = parse_collections
-      @collections_dir  = @config.dig 'collections_dir'
-      @source_dir       = @config.dig 'source_dir'
+      @collections_dir  = @config.dig('collections_dir')
+      @source_dir       = @config.dig('source_dir')
 
-      raise Error::MissingArgs, 'You must specify one or more collections after `jekyll pagemaster`' if @args.empty?
-      raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config" if @collections.empty?
+      if @args.empty?
+        raise Error::MissingArgs, "You must specify one or more collections after 'jekyll pagemaster'"
+      end
+
+      if @collections.empty?
+        raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config"
+      end
     end
 
     #
     #
     def config_from_file
-      YAML.load_file "#{`pwd`.strip}/_config.yml"
+      puts("Reading configuration")
+      return YAML.load_file("#{`pwd`.strip()}/_config.yml")
     end
 
     #
     #
     def parse_collections
-      collections_config = @config.dig 'collections'
+      puts("Parsing collection")
+      collections_config = @config.dig('collections')
 
-      raise Error::InvalidConfig, "Cannot find 'collections' key in _config.yml" if collections_config.nil?
+      if collections_config.nil?
+        raise Error::InvalidConfig, "Cannot find 'collections' key in _config.yml"
+      end
 
-      args.map do |a|
-        raise Error::InvalidArgument, "Cannot find requested collection #{a} in _config.yml" unless collections_config.key? a
+      @args.map do |argument|
+        puts("Processing argument #{argument}")
+        unless collections_config.key?(argument)
+          raise Error::InvalidArgument, "Cannot find requested collection #{argument} in _config.yml"
+        end
 
-        Collection.new(a, collections_config.fetch(a))
+        Collection.new(argument, collections_config.fetch(argument))
       end
     end
 
     #
     #
     def generate_pages
-      paths = @collections.map do |c|
-        c.generate_pages @opts, @collections_dir, @source_dir
+      paths = @collections.map do |collection_item|
+        collection_item.generate_pages(@opts, @collections_dir, @source_dir)
       end.flatten
-      puts Rainbow('Done ✔').green
-
-      paths
+      puts Rainbow("Done ✔").green
+      return paths
     end
   end
 end
