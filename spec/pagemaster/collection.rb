@@ -48,15 +48,15 @@ describe Pagemaster::Collection do
     end
   end
 
-  describe '.overwrite_pages' do
+  describe '.remove_output_dir' do
     context 'if page directory does not exists' do
       it 'does nothing' do
-        expect { csv_collection.overwrite_pages }.not_to raise_error
+        expect { csv_collection.remove_output_dir }.not_to raise_error
       end
     end
 
     it 'removes the page directory' do
-      csv_collection.overwrite_pages
+      csv_collection.remove_output_dir
     end
   end
 end

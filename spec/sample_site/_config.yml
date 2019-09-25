@@ -4,17 +4,20 @@ baseurl: ''
 
 collections:
   csv_collection:
-    output: true
-    source: valid.csv
-    id_key: pid
-    layout: test
+    output:     true
+    source:     valid.csv
+    id_key:     pid
+    layout:     test
+    title_key:  gambrel
   json_collection:
-    output: true
-    source: valid.json
-    id_key: pid
-    layout: test
+    output:     true
+    source:     valid.json
+    id_key:     pid
+    layout:     test
+    title_key:  gambrel
   yaml_collection:
-    output: true
-    source: valid.yml
-    id_key: pid
-    layout: test
+    output:     true
+    source:     valid.yml
+    id_key:     pid
+    layout:     test
+    title_key:  gambrel

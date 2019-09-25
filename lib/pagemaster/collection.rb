@@ -92,6 +92,7 @@ module Pagemaster
       @data = ingest_source
       validate_data
 
+      processed_paths = []
       @data.map do |data_entry|
         puts("Processing #{data_entry}")
         path = "#{@dir}/#{slug(data_entry[@id_key])}.md"
@@ -110,7 +111,9 @@ module Pagemaster
           File.open(path, 'w') { |file| file.write("#{new_entry.to_yaml}---") }
         end
         puts(Rainbow("Written #{path}").cyan)
+        processed_paths.append(path)
       end
+      return processed_paths
     end
 
     #
