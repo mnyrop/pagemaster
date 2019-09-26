@@ -7,14 +7,18 @@ Gem::Specification.new do |spec|
   spec.summary       = 'jekyll pagemaster plugin'
   spec.description   = 'jekyll plugin for generating md pages from csv/json/yml'
   spec.authors       = ['Marii Nyrop']
-  spec.files         = ['lib/pagemaster.rb']
+  spec.files         = ['lib/pagemaster.rb',
+                        'lib/pagemaster/collection.rb',
+                        'lib/pagemaster/command.rb',
+                        'lib/pagemaster/error.rb',
+                        'lib/pagemaster/site.rb']
   spec.require_path  = 'lib'
   spec.homepage      = 'https://github.com/mnyrop/pagemaster'
   spec.license       = 'MIT'
 
   spec.required_ruby_version = '>= 2.4'
 
-  spec.add_runtime_dependency 'jekyll', '~> 3.8'
+  spec.add_runtime_dependency 'jekyll', '~> 4.0'
   spec.add_runtime_dependency 'rainbow', '~> 3.0'
   spec.add_runtime_dependency 'safe_yaml', '~> 1.0'
 
