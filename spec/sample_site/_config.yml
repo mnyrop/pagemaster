@@ -21,3 +21,5 @@ collections:
     id_key:     pid
     layout:     test
     title_key:  gambrel
+    frontmatter_extra:
+      foo: bar

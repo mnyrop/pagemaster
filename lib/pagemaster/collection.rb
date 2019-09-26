@@ -10,11 +10,12 @@ module Pagemaster
     #
     #
     def initialize(name, config)
-      @name = name
-      @config = config
-      @source = fetch('source')
-      @id_key = fetch('id_key')
-      @title_key = fetch('title_key')
+      @name               = name
+      @config             = config
+      @source             = fetch('source')
+      @id_key             = fetch('id_key')
+      @title_key          = fetch('title_key')
+      @frontmatter_extra  = fetch('frontmatter_extra') if config.key?('frontmatter_extra')
     end
 
     # Go through the configuration and return the value for the given key
@@ -88,6 +89,7 @@ module Pagemaster
       new_entry['layout'] = @config['layout'] if @config.key?('layout')
       new_entry['title'] = title
       new_entry['data'] = data_entry
+      new_entry = new_entry.merge(@frontmatter_extra) if @frontmatter_extra
 
       if File.exist?(path)
         puts(Rainbow("#{path} already exits. Skipping.").cyan)
