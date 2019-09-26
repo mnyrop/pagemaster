@@ -20,6 +20,7 @@ collections:
     source:     valid.yml
     id_key:     pid
     layout:     test
-    title_key:  gambrel
-    frontmatter_extra:
+    do_copy:
       foo: bar
+    do_resolve:
+      title: gambrel

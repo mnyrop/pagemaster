@@ -10,12 +10,12 @@ module Pagemaster
     #
     #
     def initialize(name, config)
-      @name               = name
-      @config             = config
-      @source             = fetch('source')
-      @id_key             = fetch('id_key')
-      @title_key          = fetch('title_key')
-      @frontmatter_extra  = fetch('frontmatter_extra') if config.key?('frontmatter_extra')
+      @name         = name
+      @config       = config
+      @source       = fetch('source')
+      @id_key       = fetch('id_key')
+      @copy_keys    = fetch('do_copy') if config.key?('do_copy')
+      @resolve_keys = fetch('do_resolve') if config.key?('do_resolve')
     end
 
     # Go through the configuration and return the value for the given key
@@ -81,15 +81,39 @@ module Pagemaster
       puts Rainbow("Overwriting #{@dir} directory with --force.").cyan
     end
 
+    # Attempts to process the resolve keys
+    # For each entry
+    #   key -> foreign_key
+    # in _config.yml/do_resolve a lookup into @data occurs trying to find a mapping
+    #   foreign_key -> value
+    # If it is found the new mapping
+    #   key -> value
+    # is put into the returned hash.
+    # @return a hash mapping
+    def resolve_keys(data_entry)
+      resolved_hash = {}
+      return resolved_hash unless @resolve_keys
+
+      @resolve_keys.each do |key, foreign_key|
+        if data_entry.key?(foreign_key)
+          value = data_entry.dig(foreign_key)
+          resolved_hash[key] = value
+          puts(Rainbow("Resolved #{key} -(#{foreign_key})-> #{value}").cyan)
+        else
+          puts(Rainbow("Foreign key #{foreign_key} not found in #{data_entry} - skipping").red)
+        end
+      end
+      resolved_hash
+    end
+
     def process_data_entry(data_entry)
       puts("Processing #{data_entry}")
       path = "#{@dir}/#{slug(data_entry[@id_key])}.md"
-      title = data_entry.dig(@title_key)
       new_entry = {}
       new_entry['layout'] = @config['layout'] if @config.key?('layout')
-      new_entry['title'] = title
       new_entry['data'] = data_entry
-      new_entry = new_entry.merge(@frontmatter_extra) if @frontmatter_extra
+      new_entry = new_entry.merge(resolve_keys(data_entry))
+      new_entry = new_entry.merge(@copy_keys) if @copy_keys
 
       if File.exist?(path)
         puts(Rainbow("#{path} already exits. Skipping.").cyan)
