@@ -14,10 +14,10 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.4'
 
-  spec.add_runtime_dependency 'jekyll', '~> 3.8'
+  spec.add_runtime_dependency 'jekyll', '~> 4'
   spec.add_runtime_dependency 'rainbow', '~> 3.0'
   spec.add_runtime_dependency 'safe_yaml', '~> 1.0'
 
-  spec.add_development_dependency 'rspec', '~> 3.8'
+  spec.add_development_dependency 'rspec', '~> 3.9'
   spec.add_development_dependency 'rubocop', '>= 0.5'
 end

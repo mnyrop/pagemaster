@@ -6,13 +6,13 @@ Metrics/MethodLength:
   Max: 25
 Metrics/AbcSize:
   Max: 25
-Metrics/LineLength:
+Metrics/BlockLength:
+  Max: 50
+Layout/EmptyComment:
+  Enabled: false # Temporary
+Layout/LineLength:
   Max: 100
   IgnoredPatterns:
     - 'raise'
     - 'puts'
     - 'expect'
-Metrics/BlockLength:
-  Max: 50
-Layout/EmptyComment:
-  Enabled: false # Temporary
