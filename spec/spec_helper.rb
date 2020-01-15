@@ -5,6 +5,7 @@ SimpleCov.start do
   add_filter 'spec'
 end
 
+require File.expand_path('../lib/pagemaster.rb', __dir__)
 require 'pagemaster'
 require 'setup'
 
@@ -29,5 +30,5 @@ shared_context 'shared', shared_context: :metadata do
   end
 end
 
-require_relative 'pagemaster/site'
-require_relative 'pagemaster/collection'
+require 'collection_spec'
+require 'site_spec'
