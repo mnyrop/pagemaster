@@ -2,6 +2,7 @@
 
 describe Pagemaster::Collection do
   include_context 'shared'
+  before(:all) { Pagemaster::Test.reset }
 
   let(:csv_collection)  { site.collections.first }
   let(:json_collection) { site.collections[1] }

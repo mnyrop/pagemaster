@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+lib = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'pagemaster/version'
+
 Gem::Specification.new do |spec|
   spec.name          = 'pagemaster'
-  spec.version       = '2.1.1'
+  spec.version       = Pagemaster::VERSION
   spec.date          = '2018-03-27'
   spec.summary       = 'jekyll pagemaster plugin'
   spec.description   = 'jekyll plugin for generating md pages from csv/json/yml'
