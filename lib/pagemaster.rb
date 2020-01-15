@@ -15,6 +15,7 @@ require 'pagemaster/collection'
 require 'pagemaster/command'
 require 'pagemaster/error'
 require 'pagemaster/site'
+require 'pagemaster/version'
 
 #
 #
