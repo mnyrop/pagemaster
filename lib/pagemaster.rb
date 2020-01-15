@@ -11,10 +11,10 @@ require 'rainbow'
 require 'safe_yaml'
 
 # relative
-require_relative 'pagemaster/collection'
-require_relative 'pagemaster/command'
-require_relative 'pagemaster/error'
-require_relative 'pagemaster/site'
+require 'pagemaster/collection'
+require 'pagemaster/command'
+require 'pagemaster/error'
+require 'pagemaster/site'
 
 #
 #
