@@ -14,7 +14,7 @@ module Pagemaster
       @config           = config || config_from_file
       @collections      = parse_collections
       @collections_dir  = @config.dig 'collections_dir'
-      @source_dir       = @config.dig 'source_dir'
+      @source_dir       = @config.dig 'source'
 
       raise Error::MissingArgs, 'You must specify one or more collections after `jekyll pagemaster`' if @args.empty?
       raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config" if @collections.empty?

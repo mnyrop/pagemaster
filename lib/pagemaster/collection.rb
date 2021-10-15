@@ -25,8 +25,7 @@ module Pagemaster
 
     #
     #
-    def ingest_source
-      file = "_data/#{@source}"
+    def ingest_source(file)
       raise Error::InvalidSource, "Cannot find source file #{file}" unless File.exist? file
 
       case File.extname file
@@ -65,12 +64,13 @@ module Pagemaster
     #
     #
     def generate_pages(opts, collections_dir, source_dir)
-      @opts   = opts
-      @dir    = File.join [source_dir, collections_dir, "_#{@name}"].compact
+      @opts         = opts
+      @dir          = File.join [source_dir, collections_dir, "_#{@name}"].compact
+      @source_file  = File.join [source_dir, '_data', @source].compact
 
       overwrite_pages if @opts.fetch :force, false
       FileUtils.mkdir_p @dir
-      @data = ingest_source
+      @data = ingest_source @source_file
       validate_data
 
       @data.map do |d|
