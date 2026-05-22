@@ -1,10 +1,7 @@
 # pagemaster
 
 [![Gem Version](https://badge.fury.io/rb/pagemaster.svg)](https://badge.fury.io/rb/pagemaster) ![License](https://img.shields.io/badge/license-MIT-yellowgreen.svg) ![Gem](https://img.shields.io/gem/dt/pagemaster?color=blue)
-[![Build Status](https://travis-ci.com/mnyrop/pagemaster.svg?branch=master)](https://travis-ci.com/mnyrop/pagemaster)
-[![Dependencies](https://img.shields.io/librariesio/github/mnyrop/pagemaster.svg)](https://libraries.io/github/mnyrop/pagemaster)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/maintainability)](https://codeclimate.com/github/mnyrop/pagemaster/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/test_coverage)](https://codeclimate.com/github/mnyrop/pagemaster/test_coverage)
+[![Dependencies](https://img.shields.io/librariesio/github/mnyrop/pagemaster.svg)](https://libraries.io/github/mnyrop/pagemaster) [![Maintainability](https://api.codeclimate.com/v1/badges/4f88f2668f643bbbacdf/maintainability)](https://codeclimate.com/github/mnyrop/pagemaster/maintainability)
 
 __jekyll plugin for generating markdown collection pages from .csv, .json, or .yml records__
 
@@ -48,6 +45,9 @@ collections:
     source: writer-list.csv
     id_key: id
     layout: writer-profile-page
+    split:
+      - key: tags
+        separator: ';'
   scientists:
     output: true
     source: scientist-survey.json
@@ -61,7 +61,7 @@ collections:
 For the `writers` example above, **pagemaster** will:
 1. look for `writer-list.csv` in the `_data` directory,
 2. make a new directory called `_writers`, and
-3. generate a markdown page for each item in `writer-list.csv`, named after its `id` value and using the `writer-profile-page.html` layout.
+3. generate a markdown page for each item in `writer-list.csv`, named after its `id` value and using the `writer-profile-page.html` layout. If a `split` is configured, Pagemaster will turn the values for that `key` into arrays using the `separator` value.
 
 For the `scientists` example above, **pagemaster** will:
 1. look for `scientist-survey.json` in the `_data` directory,

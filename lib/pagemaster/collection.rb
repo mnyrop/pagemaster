@@ -78,6 +78,7 @@ module Pagemaster
       FileUtils.mkdir_p @dir
       @data = ingest_source
       validate_data
+      apply_split
 
       @data.map do |d|
         path = "#{@dir}/#{slug d[@id_key]}.md"
@@ -88,6 +89,26 @@ module Pagemaster
           File.write(path, "#{d.to_yaml}---")
         end
         path
+      end
+    end
+
+    #
+    #
+    def apply_split
+      split_config = @config['split']
+      return unless split_config
+
+      split_config.each do |split_item|
+        key = split_item['key']
+        separator = split_item['separator']
+
+        @data.each do |item|
+          value = item[key]
+          next unless value && !value.empty?
+
+          # Split on separator and trim whitespace from each element
+          item[key] = value.split(separator).map(&:strip)
+        end
       end
     end
 

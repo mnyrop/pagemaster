@@ -9,6 +9,9 @@ collections:
     source: valid.csv
     id_key: pid
     layout: test
+    split:
+      - key: tags
+        separator: ';'
   json_collection:
     output: true
     source: valid.json
