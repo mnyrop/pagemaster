@@ -12,12 +12,16 @@ module Pagemaster
       @args             = args
       @opts             = opts
       @config           = config || config_from_file
+      @source_dir       = @config['source' || '']
       @collections      = parse_collections
-      @collections_dir  = @config.dig 'collections_dir'
-      @source_dir       = @config.dig 'source_dir'
+      @collections_dir  = @config['collections_dir']
 
-      raise Error::MissingArgs, 'You must specify one or more collections after `jekyll pagemaster`' if @args.empty?
-      raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config" if @collections.empty?
+      if @args.empty?
+        raise Error::MissingArgs, 'You must specify one or more collections after `jekyll pagemaster`'
+      end
+      return unless @collections.empty?
+
+      raise Error::InvalidCollection, "Cannot find collection(s) #{@args} in config"
     end
 
     #
@@ -29,14 +33,18 @@ module Pagemaster
     #
     #
     def parse_collections
-      collections_config = @config.dig 'collections'
+      collections_config = @config['collections']
 
-      raise Error::InvalidConfig, "Cannot find 'collections' key in _config.yml" if collections_config.nil?
+      if collections_config.nil?
+        raise Error::InvalidConfig, "Cannot find 'collections' key in _config.yml"
+      end
 
       args.map do |a|
-        raise Error::InvalidArgument, "Cannot find requested collection #{a} in _config.yml" unless collections_config.key? a
+        unless collections_config.key? a
+          raise Error::InvalidArgument, "Cannot find requested collection #{a} in _config.yml"
+        end
 
-        Collection.new(a, collections_config.fetch(a))
+        Collection.new(a, collections_config.fetch(a), @source_dir)
       end
     end
 

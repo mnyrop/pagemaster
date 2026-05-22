@@ -8,11 +8,12 @@ module Pagemaster
 
     #
     #
-    def initialize(name, config)
-      @name   = name
-      @config = config
-      @source = fetch 'source'
-      @id_key = fetch 'id_key'
+    def initialize(name, config, source_dir)
+      @name       = name
+      @config     = config
+      @source_dir = source_dir
+      @source     = fetch 'source'
+      @id_key     = fetch 'id_key'
     end
 
     #
@@ -20,13 +21,14 @@ module Pagemaster
     def fetch(key)
       raise Error::InvalidCollection unless @config.key? key
 
-      @config.dig key
+      @config[key]
     end
 
     #
     #
     def ingest_source
-      file = "_data/#{@source}"
+      file = File.join [@source_dir, '_data', @source].compact
+
       raise Error::InvalidSource, "Cannot find source file #{file}" unless File.exist? file
 
       case File.extname file
@@ -46,11 +48,15 @@ module Pagemaster
     #
     #
     def validate_data
-      ids = @data.map { |d| d.dig @id_key }
-      raise Error::InvalidCollection, "One or more items in collection '#{@name}' is missing required id for the id_key '#{@id_key}'" unless ids.all?
+      ids = @data.map { |d| d[@id_key] }
+      unless ids.all?
+        raise Error::InvalidCollection, "One or more items in collection '#{@name}' is missing required id for the id_key '#{@id_key}'"
+      end
 
       duplicates = ids.detect { |i| ids.count(i) > 1 } || []
-      raise Error::InvalidCollection, "The collection '#{@name}' has the follwing duplicate ids for id_key #{@id_key}: \n#{duplicates}" unless duplicates.empty?
+      return if duplicates.empty?
+
+      raise Error::InvalidCollection, "The collection '#{@name}' has the follwing duplicate ids for id_key #{@id_key}: \n#{duplicates}"
     end
 
     #
@@ -79,7 +85,7 @@ module Pagemaster
         if File.exist? path
           puts Rainbow("#{path} already exits. Skipping.").cyan
         else
-          File.open(path, 'w') { |f| f.write("#{d.to_yaml}---") }
+          File.write(path, "#{d.to_yaml}---")
         end
         path
       end

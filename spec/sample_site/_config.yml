@@ -1,6 +1,7 @@
 title: ''
 url: ''
 baseurl: ''
+source: 'src'
 
 collections:
   csv_collection:

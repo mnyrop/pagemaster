@@ -21,7 +21,7 @@ describe Pagemaster::Site do
 
     it 'parses the opts' do
       expect(site.opts).to be_a Hash
-      expect(site.opts). to eq opts
+      expect(site.opts).to eq opts
     end
 
     it 'parses the collections' do

@@ -13,8 +13,8 @@ def quiet_stdout
     begin
       orig_stderr = $stderr.clone
       orig_stdout = $stdout.clone
-      $stderr.reopen File.new('/dev/null', 'w')
-      $stdout.reopen File.new('/dev/null', 'w')
+      $stderr.reopen File.new(File::NULL, 'w')
+      $stdout.reopen File.new(File::NULL, 'w')
       retval = yield
     rescue StandardError => e
       $stdout.reopen orig_stdout
