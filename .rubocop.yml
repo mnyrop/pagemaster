@@ -1,5 +1,7 @@
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.4
+  SuggestExtensions: false
 Style/MixinUsage:
   Enabled: false
 Metrics/MethodLength:
@@ -12,7 +14,7 @@ Layout/EmptyComment:
   Enabled: false # Temporary
 Layout/LineLength:
   Max: 100
-  IgnoredPatterns:
+  AllowedPatterns:
     - 'raise'
     - 'puts'
     - 'expect'
